@@ -2,35 +2,42 @@
 
 
 ```html
-<be-metamorphic upgrade=div if-wants-be-metamorphic></be-metamorphic>
-
-...
-
-<my-custom-element be-metamorphic>
-<template shadowroot="open">
-  My ShadowDOM Content I
-</template>
-<span slot=mySlot>My Slotted Content I</span>
-</div>
-
-<my-custom-element>
-  <span slot=mySlot>My Slotted Content II</span>
-</my-custom-element>
-
-<my-custom-element>
-  <template shadowroot="open">
-    My ShadowDOM Content III
-  </template>
-  <span slot=mySlot>My Slotted Content III</span>
-</div>
+<style be-evanescent='["ui5-list", "ui5-li"]'>
+  ul{
+    list-style: none;
+    padding: 0;
+  }
+  li{
+    display: inline-block;
+    margin-right: 10px;
+  }
+</style>
+<template>
+    <xsl:template match="ul" >
+        <ui5-list style="height: 300px" growing="Scroll">
+            <xsl:apply-templates select="li" />
+        </ul5-list>
+    </xsl:template>
+    <xsl:template match="li">
+       <ui5-li icon="nutrition-activity" description="{span[slot=@description]/node()}" additional-text="{span[slot=additional-text]/node()}]}></ui5-li>
+    </xsl:template>
+<template>
+<ul id="infiniteScrollEx"  be-metamorphic='["ui5-list", "ui5-li"]'>
+	<li>
+    Pineapple
+    <span slot=description>Occurs between red and yellow</span>
+    <span slot=additional-text>Expires</span>
+    <span slot=additional-text-state>Warning</span>
+  </li>
+  <li>
+    Banana
+    <span slot=description>The yellow lengthy fruit</span>
+    <span slot=additional-text>Re-stock</span>
+    <span slot=additional-text-state>Error</span>   
+  </li>
+</ul>
 
 ```
-
-be-metamorphic:
-
-1.  If my-custom-element isn't defined:
-    1.  Defines custom element my-custom-element with template (or shadow DOM) as the main template (use getInnerHTML({includeShadowRoots: true}))?
-    2.  Uses ctor prop which defines the class.  Uses x.tend 
 
 
 

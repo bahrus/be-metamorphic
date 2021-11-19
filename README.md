@@ -19,7 +19,7 @@
         </ul5-list>
     </xsl:template>
     <xsl:template match="li">
-       <ui5-li icon="nutrition-activity" description="{span[slot=@description]/node()}" additional-text="{span[slot=additional-text]/node()}]}></ui5-li>
+       <ui5-li icon="nutrition-activity" description="{span[slot=@description]/node()}" additional-text="{span[slot=additional-text]/node()}]}"></ui5-li>
     </xsl:template>
 <template>
 <ul id="infiniteScrollEx"  be-metamorphic='["ui5-list", "ui5-li"]'>

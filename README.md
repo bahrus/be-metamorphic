@@ -77,12 +77,13 @@ Oftentimes we don't want to transform the original native html into the more rob
 <head>
 <script type=importmap>
   "imports":{
-    "my-package/": "https://example.com/my-package/"
+    "my-package/": "https://example.com/my-package/ui5/"
   }
 </script>
 </head>
 <body>
-  <ul be-metamorphic=my-package/ui5-list.xslt>
+  <ul be-metamorphic=my-package/list.xslt>
+  </ul>
 ```
 
 

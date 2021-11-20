@@ -1,6 +1,6 @@
 # be-metamorphic [TODO]
 
-be-metamorphic let's us party like it's 1999, and take advantage of the [increasingly popular](https://www.chromestatus.com/metrics/feature/timeline/popularity/79) XSLT to turn a caterpillar of native HTML markup into a butterfly of web components filled goodness.
+be-metamorphic let's us party like it's 1999, and take advantage of the [increasingly popular](https://www.chromestatus.com/metrics/feature/timeline/popularity/79) XSLT to turn a caterpillar of native HTML markup into a butterfly of web components-filled goodness.
 
 
 
@@ -88,4 +88,31 @@ Oftentimes we don't want to transform the original native html into the more rob
 
 
 
+JSON-xslt
 
+```JSON
+{
+  "xsl:template":{
+    "match": "ul",
+    "items": [{
+      "ui5-list": {
+        "style": "height: 300px",
+        "growing": "Scroll",
+        "items": [
+          {
+            "xsl:apply-templates": {
+              "select": "li"
+            }
+          }
+        ]
+      }
+    } ]
+  }
+}
+
+```
+<xsl:template match="ul" >
+    <ui5-list style="height: 300px" growing="Scroll">
+        <xsl:apply-templates select="li" />
+    </ui5-list>
+</xsl:template>

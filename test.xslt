@@ -23,7 +23,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         additional-text="{span[@slot='additional-text']}"
         additional-text-state="{span[@slot='additional-text-state']}"
     >
-        
+        <xsl:value-of select="node()"/>
     </ui5-li>
 </xsl:template>
 </xsl:stylesheet>

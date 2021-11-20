@@ -1,5 +1,5 @@
 <?xml-stylesheet type='text/xsl' href='test.xslt'?>
-<ul id="infiniteScrollEx"  be-metamorphic='["ui5-list", "ui5-li"]'>
+<ul>
 	<li>
     Pineapple
     <span slot="description">Occurs between red and yellow</span>

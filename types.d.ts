@@ -15,4 +15,5 @@ export interface BeMetamorphicActions{
     onXslt(self: this): Promise<{xsltNode: Node}>;
     onWhenDefined(self: this): Promise<{areDefined: boolean}>;
     onReady(self: this): void;
+    intro(proxy: HTMLTemplateElement & BeMetamorphicVirtualProps, target: Element, beDecorProps: BeDecoratedProps): void;
 }

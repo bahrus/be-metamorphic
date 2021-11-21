@@ -4,6 +4,13 @@
   "description": "Use XSLT to turn a caterpillar of native HTML markup into a butterfly of web components-filled goodness",
   "main": "be-metamorphic.js",
   "module": "be-metamorphic.js",
+  "keywords": [
+    "web-components",
+    "web-component",
+    "custom-element",
+    "custom-elements",
+    "xslt"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "node node_modules/xtal-test/serve.js",

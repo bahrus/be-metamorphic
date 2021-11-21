@@ -1,10 +1,11 @@
-# be-metamorphic [TODO]
+# be-metamorphic 
 
 be-metamorphic let's us party like it's 1999, and take advantage of the [increasingly popular](https://www.chromestatus.com/metrics/feature/timeline/popularity/79) XSLT to turn a caterpillar of native HTML markup into a butterfly of web components-filled goodness.
 
 ## Problem Statements
 
-
+1.  Progressively enhance a web page by converting swathes of native HTML into web components once the once components are downloaded.
+2.  Design a component or web app with native elements, then apply an additional layer that can upgrade to one or more pleasing web component based experience when ready, without too much effort, adopting different design systems with little pain.
 
 ```html
 

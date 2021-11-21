@@ -38,6 +38,13 @@ export class BeMetamorphicController implements BeMetamorphicActions{
         proxy.remove();   
         
     }
+
+    async onXsltSearch({xsltSearch}: this){
+        const {upShadowSearch} = await import('trans-render/lib/upShadowSearch.js');
+        const template = upShadowSearch(this.#target, xsltSearch)! as HTMLTemplateElement;
+        const xsltNode = template.content;
+        return {xsltNode};
+    }
 }
 
 export interface BeMetamorphicController extends BeMetamorphicProps{}
@@ -56,7 +63,7 @@ define<BeMetamorphicProps & BeDecoratedProps<BeMetamorphicProps, BeMetamorphicAc
             ifWantsToBe,
             primaryProp: 'xslt',
             intro: 'intro',
-            virtualProps: ['xslt', 'whenDefined', 'areDefined', 'xsltNode'],
+            virtualProps: ['xslt', 'whenDefined', 'areDefined', 'xsltNode', 'xsltSearch'],
             proxyPropDefaults:{
                 whenDefined: []
             }
@@ -68,6 +75,10 @@ define<BeMetamorphicProps & BeDecoratedProps<BeMetamorphicProps, BeMetamorphicAc
             },
             onWhenDefined: {
                 ifAllOf: ['whenDefined'],
+                async: true,
+            },
+            onXsltSearch:{
+                ifAllOf: ['xsltSearch'],
                 async: true,
             },
             onReady:{

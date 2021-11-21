@@ -33,6 +33,12 @@ export class BeMetamorphicController {
         }
         proxy.remove();
     }
+    async onXsltSearch({ xsltSearch }) {
+        const { upShadowSearch } = await import('trans-render/lib/upShadowSearch.js');
+        const template = upShadowSearch(this.#target, xsltSearch);
+        const xsltNode = template.content;
+        return { xsltNode };
+    }
 }
 const tagName = 'be-metamorphic';
 const ifWantsToBe = 'metamorphic';
@@ -45,7 +51,7 @@ define({
             ifWantsToBe,
             primaryProp: 'xslt',
             intro: 'intro',
-            virtualProps: ['xslt', 'whenDefined', 'areDefined', 'xsltNode'],
+            virtualProps: ['xslt', 'whenDefined', 'areDefined', 'xsltNode', 'xsltSearch'],
             proxyPropDefaults: {
                 whenDefined: []
             }
@@ -57,6 +63,10 @@ define({
             },
             onWhenDefined: {
                 ifAllOf: ['whenDefined'],
+                async: true,
+            },
+            onXsltSearch: {
+                ifAllOf: ['xsltSearch'],
                 async: true,
             },
             onReady: {

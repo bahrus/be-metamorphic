@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <template id=ui5-list>
+        <?xml version="1.0"?>
+        <xsl:stylesheet version="1.0"
+        xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+        
+        <xsl:template match="ul" >
+            <ui5-list style="height: 300px" growing="Scroll">
+                <xsl:apply-templates select="li" />
+            </ui5-list>
+        </xsl:template>
+        <xsl:template match="li">
+        
+            <ui5-li 
+                icon="nutrition-activity" 
+                description="{span[@slot='description']}" 
+                additional-text="{span[@slot='additional-text']}"
+                additional-text-state="{span[@slot='additional-text-state']}"
+            >
+                <xsl:value-of select="node()"/>
+            </ui5-li>
+        </xsl:template>
+        </xsl:stylesheet>        
+    </template>
+    <ul  be-metamorphic='{
+        "xsltSearch": "ui5-list"
+    }'>
+        <li>
+            Pineapple
+            <span slot=description>Occurs between red and yellow</span>
+            <span slot=additional-text>Expires</span>
+            <span slot=additional-text-state>Warning</span>
+        </li>
+        <li>
+        Banana
+            <span slot=description>The yellow lengthy fruit</span>
+            <span slot=additional-text>Re-stock</span>
+            <span slot=additional-text-state>Error</span>   
+        </li>
+    </ul>
+    <script type=importmap>
+        {
+            "imports": {
+                "trans-render/": "../node_modules/trans-render/",
+                "xtal-element/": "../node_modules/xtal-element/",
+                "be-decorated/": "../node_modules/be-decorated/",
+                "be-hive/":  "../node_modules/be-hive/"
+            }
+        }
+    </script>
+    <script type=module>
+        import '../be-metamorphic.js';
+        import 'be-hive/be-hive.js';
+    </script>
+</body>
+</html>

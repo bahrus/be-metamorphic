@@ -2,6 +2,8 @@
 
 be-metamorphic let's us party like it's 1999, and take advantage of the [increasingly popular](https://www.chromestatus.com/metrics/feature/timeline/popularity/79) XSLT to turn a caterpillar of native HTML markup into a butterfly of web components-filled goodness.
 
+<a href="https://nodei.co/npm/be-netaniroguc/"><img src="https://nodei.co/npm/be-metamorphic.png"></a>
+
 ## Problem Statements
 
 1.  Progressively enhance a web page by converting swaths of native HTML into web components once the once components are downloaded.

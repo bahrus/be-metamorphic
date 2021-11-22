@@ -12,11 +12,6 @@ export class BeMetamorphicController {
         return { xsltNode };
     }
     async onWhenDefined({ whenDefined }) {
-        // const promises: Promise<CustomElementConstructor>[] = whenDefined.map(s => customElements.whenDefined(s));
-        // for const 
-        // return Promise.all(promises).then((values) => {
-        //     return {areDefined: true};
-        // });
         for (const s of whenDefined) {
             await customElements.whenDefined(s);
         }

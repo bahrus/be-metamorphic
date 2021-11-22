@@ -7,7 +7,7 @@ be-metamorphic let's us party like it's 1999, and take advantage of the [increas
 ## Problem Statements
 
 1.  Progressively enhance a web page by converting swaths of native HTML into web components once components are downloaded.
-2.  Design a component or web app with native elements, then apply an additional layer that can upgrade to one or more pleasing web component based experience when ready, without too much effort, adopting different design systems with little pain.
+2.  Use common definition of web component, based on native elements, to provide bare-bones implementation of web component or web composition, then, based on which design library is loaded, invoke the appropriate transform to morph the native elements into the design library based components.
 
 ```html
 
@@ -62,15 +62,49 @@ generates:
 </ui5-list>
 ```
 
-## Delayed Satisfaction
+## Shared template [TODO]
+
+```html
+
+<ul  be-metamorphic=./ui5.xsl>
+	<li>
+    Pineapple
+    <span slot=description>Occurs between red and yellow</span>
+    <span slot=additional-text>Expires</span>
+    <span slot=additional-text-state>Warning</span>
+  </li>
+  <li>
+    Banana
+    <span slot=description>The yellow lengthy fruit</span>
+    <span slot=additional-text>Re-stock</span>
+    <span slot=additional-text-state>Error</span>   
+  </li>
+</ul>
+
+<table be-metamorphic>
+</table>
+
+```
+
+If no settings are specified (like with the table), share the same settings for all the elements in the ShadowDOM realm.
+
+## Delayed Satisfaction / Conditional Template
 
 Oftentimes we don't want to transform the original native html into the more robust markup until the needed downloads have finished. 
 
+And/or we want to apply a conditional transformation based on the presence of the dependencies, allowing us to decide which design library to use via import maps (or some other approach).
+
 ```html
-<ul be-metamorphic='{
-  "xslt": "./ui5-list.xsl",
-  "whenDefined": ["ui5-list", "ui5-li"]
-}'
+<ul be-metamorphic='[
+  {
+    "xslt": "./ui5.xsl",
+    "whenDefined": ["ui5-list", "ui5-li"]
+  },
+  {
+    "xslt": "./mwc.xsl",
+    "whenDefined": ["mwc-list", "mwc-list-item"]
+  }
+]'
 >
 </ul>
 ```

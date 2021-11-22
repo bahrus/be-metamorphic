@@ -6,7 +6,7 @@ be-metamorphic let's us party like it's 1999, and take advantage of the [increas
 
 ## Problem Statements
 
-1.  Progressively enhance a web page by converting swaths of native HTML into web components once the once components are downloaded.
+1.  Progressively enhance a web page by converting swaths of native HTML into web components once components are downloaded.
 2.  Design a component or web app with native elements, then apply an additional layer that can upgrade to one or more pleasing web component based experience when ready, without too much effort, adopting different design systems with little pain.
 
 ```html
@@ -81,55 +81,9 @@ By default, the output of the xslt replaces the element that the be-metamorphic 
 
 However, other "modes" are also supported:
 
-```TypeScript
+```typeScript
 export interface BeMetamorphicVirtualProps{
   mode: 'replace' | 'append' | 'prepend' | 'adjacentAfterEnd'
 }
 ```
 
-## Use of import maps [TODO]
-
-```html
-<html>
-<head>
-<script type=importmap>
-  "imports":{
-    "my-package/": "https://example.com/my-package/ui5/"
-  }
-</script>
-</head>
-<body>
-  <ul be-metamorphic=my-package/list.xslt>
-  </ul>
-```
-
-
-
-JSON-xslt
-
-```JSON
-{
-  "xsl:template":{
-    "match": "ul",
-    "items": [{
-      "ui5-list": {
-        "style": "height: 300px",
-        "growing": "Scroll",
-        "items": [
-          {
-            "xsl:apply-templates": {
-              "select": "li"
-            }
-          }
-        ]
-      }
-    } ]
-  }
-}
-
-```
-<xsl:template match="ul" >
-    <ui5-list style="height: 300px" growing="Scroll">
-        <xsl:apply-templates select="li" />
-    </ui5-list>
-</xsl:template>

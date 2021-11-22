@@ -63,11 +63,11 @@ generates:
 </ui5-list>
 ```
 
-## Shared template [TODO]
+## Shared templat
 
 ```html
 
-<ul  be-metamorphic=./ui5.xsl>
+<ul  be-metamorphic>
 	<li>
     Pineapple
     <span slot=description>Occurs between red and yellow</span>
@@ -84,7 +84,11 @@ generates:
 
 <table be-metamorphic>
 </table>
-
+<be-hive>
+  <be-metamorphic proxy-default-props='{
+    "xslt": "/ui5.xsl"
+  }'>
+</be-hive>
 ```
 
 If no settings are specified (like with the table), share the same settings for all the elements in the ShadowDOM realm.

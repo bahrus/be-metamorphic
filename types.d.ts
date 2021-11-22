@@ -5,7 +5,8 @@ export interface BeMetamorphicVirtualProps{
     xsltNode: Node,
     xsltSearch: string,
     areDefined: boolean,
-    whenDefined: string[]
+    whenDefined: string[],
+    mode: 'replace' | 'append' | 'prepend' | 'adjacentAfterEnd'
 }
 
 export interface BeMetamorphicProps extends BeMetamorphicVirtualProps{

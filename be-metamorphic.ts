@@ -26,16 +26,39 @@ export class BeMetamorphicController implements BeMetamorphicActions{
         }
         return {areDefined: true};
     }
-    onReady({proxy, xsltNode}: this): void{
+    onReady({proxy, xsltNode, mode}: this): void{
         const xslt = new XSLTProcessor();
         xslt.importStylesheet(xsltNode);
         const resultDocument = xslt.transformToFragment(this.#target, document);
         let appendTo = proxy as Element;
-        for(const childNode of resultDocument.children){
-            appendTo.insertAdjacentElement('afterend', childNode);
-            appendTo = childNode;
+        switch(mode){
+            case 'replace':
+            case 'adjacentAfterEnd':
+                for(const childNode of resultDocument.children){
+                    switch(mode){
+                        case 'replace':
+                        case 'adjacentAfterEnd':
+                            appendTo.insertAdjacentElement('afterend', childNode);
+                            appendTo = childNode;
+                            break;
+                    }
+        
+                }
+                break;
+            case 'append':
+                appendTo.append(resultDocument);
+                break;
+            case 'prepend':
+                appendTo.prepend(resultDocument);
+                break;
         }
-        proxy.remove();   
+        
+
+        switch(mode){
+            case 'replace':
+                proxy.remove();
+        }
+           
         
     }
 
@@ -63,9 +86,10 @@ define<BeMetamorphicProps & BeDecoratedProps<BeMetamorphicProps, BeMetamorphicAc
             ifWantsToBe,
             primaryProp: 'xslt',
             intro: 'intro',
-            virtualProps: ['xslt', 'whenDefined', 'areDefined', 'xsltNode', 'xsltSearch'],
+            virtualProps: ['xslt', 'whenDefined', 'areDefined', 'xsltNode', 'xsltSearch', 'mode'],
             proxyPropDefaults:{
-                whenDefined: []
+                whenDefined: [],
+                mode: 'replace'
             }
         },
         actions:{

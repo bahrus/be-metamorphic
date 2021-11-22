@@ -77,7 +77,15 @@ Oftentimes we don't want to transform the original native html into the more rob
 
 ## Specifying Target
 
+By default, the output of the xslt replaces the element that the be-metamorphic attribute is attached to.
 
+However, other "modes" are also supported:
+
+```TypeScript
+export interface BeMetamorphicVirtualProps{
+  mode: 'replace' | 'append' | 'prepend' | 'adjacentAfterEnd'
+}
+```
 
 ## Use of import maps [TODO]
 

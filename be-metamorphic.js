@@ -31,13 +31,8 @@ export class BeMetamorphicController {
             case 'replace':
             case 'adjacentAfterEnd':
                 for (const childNode of resultDocument.children) {
-                    switch (mode) {
-                        case 'replace':
-                        case 'adjacentAfterEnd':
-                            appendTo.insertAdjacentElement('afterend', childNode);
-                            appendTo = childNode;
-                            break;
-                    }
+                    appendTo.insertAdjacentElement('afterend', childNode);
+                    appendTo = childNode;
                 }
                 break;
             case 'append':

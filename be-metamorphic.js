@@ -2,51 +2,66 @@ import { define } from 'be-decorated/be-decorated.js';
 import { register } from 'be-hive/register.js';
 export class BeMetamorphicController {
     #target;
-    intro(proxy, target, beDecorProps) {
+    intro(proxy, target, { ifWantsToBe, proxyPropDefaults }) {
         this.#target = target;
-    }
-    async onXslt({ xslt }) {
-        const resp = await fetch(xslt);
-        const xsltString = await resp.text();
-        const xsltNode = new DOMParser().parseFromString(xsltString, 'text/xml');
-        return { xsltNode };
-    }
-    async onWhenDefined({ whenDefined }) {
-        for (const s of whenDefined) {
-            await customElements.whenDefined(s);
+        const attr = target.getAttribute(`is-${ifWantsToBe}`).trim();
+        const morphParams = { ...proxyPropDefaults.morphParams };
+        if (attr.length > 0) {
+            if (attr[0] === '{') {
+                Object.assign(morphParams, JSON.parse(attr));
+            }
+            else {
+                Object.assign(morphParams, {
+                    attr: {
+                        mode: 'replace',
+                        whenDefined: [],
+                    }
+                });
+            }
         }
-        return { areDefined: true };
+        proxy.morphParams = morphParams;
     }
-    onReady({ proxy, xsltNode, mode }) {
-        const xslt = new XSLTProcessor();
-        xslt.importStylesheet(xsltNode);
-        const resultDocument = xslt.transformToFragment(this.#target, document);
-        let appendTo = proxy;
-        switch (mode) {
-            case 'replace':
-            case 'adjacentAfterEnd':
-                for (const childNode of resultDocument.children) {
-                    appendTo.insertAdjacentElement('afterend', childNode);
-                    appendTo = childNode;
-                }
-                break;
-            case 'append':
-                appendTo.append(resultDocument);
-                break;
-            case 'prepend':
-                appendTo.prepend(resultDocument);
-                break;
+    async onMorphParams({ morphParams, proxy }) {
+        for (const key in morphParams) {
+            const { isUpSearch, whenDefined, mode } = morphParams[key];
+            let xsltNode;
+            if (isUpSearch) {
+                const { upShadowSearch } = await import('trans-render/lib/upShadowSearch.js');
+                const template = upShadowSearch(this.#target, key);
+                xsltNode = template.content;
+            }
+            else {
+                const resp = await fetch(key);
+                const xsltString = await resp.text();
+                xsltNode = new DOMParser().parseFromString(xsltString, 'text/xml');
+            }
+            for (const s of whenDefined) {
+                await customElements.whenDefined(s);
+            }
+            const xslt = new XSLTProcessor();
+            xslt.importStylesheet(xsltNode);
+            const resultDocument = xslt.transformToFragment(this.#target, document);
+            let appendTo = this.#target;
+            switch (mode) {
+                case 'replace':
+                case 'adjacentAfterEnd':
+                    for (const childNode of resultDocument.children) {
+                        appendTo.insertAdjacentElement('afterend', childNode);
+                        appendTo = childNode;
+                    }
+                    break;
+                case 'append':
+                    appendTo.append(resultDocument);
+                    break;
+                case 'prepend':
+                    appendTo.prepend(resultDocument);
+                    break;
+            }
+            switch (mode) {
+                case 'replace':
+                    proxy.remove();
+            }
         }
-        switch (mode) {
-            case 'replace':
-                proxy.remove();
-        }
-    }
-    async onXsltSearch({ xsltSearch }) {
-        const { upShadowSearch } = await import('trans-render/lib/upShadowSearch.js');
-        const template = upShadowSearch(this.#target, xsltSearch);
-        const xsltNode = template.content;
-        return { xsltNode };
     }
 }
 const tagName = 'be-metamorphic';
@@ -60,27 +75,13 @@ define({
             ifWantsToBe,
             primaryProp: 'xslt',
             intro: 'intro',
-            virtualProps: ['xslt', 'whenDefined', 'areDefined', 'xsltNode', 'xsltSearch', 'mode'],
-            proxyPropDefaults: {
-                whenDefined: [],
-                mode: 'replace'
-            }
+            noParse: true,
+            virtualProps: ['morphParams'],
+            proxyPropDefaults: {}
         },
         actions: {
-            onXslt: {
-                ifAllOf: ['xslt'],
-                async: true,
-            },
-            onWhenDefined: {
-                ifAllOf: ['whenDefined'],
-                async: true,
-            },
-            onXsltSearch: {
-                ifAllOf: ['xsltSearch'],
-                async: true,
-            },
-            onReady: {
-                ifAllOf: ['xsltNode', 'areDefined']
+            onMorphParams: {
+                ifAllOf: ['morphParams'],
             }
         }
     },

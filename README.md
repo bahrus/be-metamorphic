@@ -63,7 +63,7 @@ generates:
 </ui5-list>
 ```
 
-## Shared templat
+## Shared template
 
 ```html
 
@@ -85,7 +85,7 @@ generates:
 <table be-metamorphic>
 </table>
 <be-hive>
-  <be-metamorphic proxy-default-props='{
+  <be-metamorphic proxy-prop-defaults='{
     "xslt": "/ui5.xsl"
   }'>
 </be-hive>
@@ -103,7 +103,8 @@ And/or we want to apply a conditional transformation based on the presence of th
 <ul be-metamorphic='{
   "./ui5.xslt": {
     "isUpSearch": false, //default
-    "when-defined": ["ui5-list", "ui5-li"]
+    "when-defined": ["ui5-list", "ui5-li"],
+    "mode": "replace", //default
   }
 }'
 >

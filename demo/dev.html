@@ -8,7 +8,7 @@
 </head>
 <body>
     
-    <ul  be-metamorphic=./ui5-list.xslt>
+    <ul  be-metamorphic>
         <li>
             Pineapple
             <span slot=description>Occurs between red and yellow</span>
@@ -22,6 +22,16 @@
             <span slot=additional-text-state>Error</span>   
         </li>
     </ul>
+    <be-hive>
+        <be-metamorphic proxy-prop-defaults='{
+            "morphParams":{
+                "./ui5-list.xslt":{
+                    "whenDefined": [],
+                    "mode": "replace"
+                }
+            }
+        }'></be-metamorphic>
+    </be-hive>
     <script type=importmap>
         {
             "imports": {

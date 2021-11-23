@@ -93,23 +93,19 @@ generates:
 
 If no settings are specified (like with the table), share the same settings for all the elements in the ShadowDOM realm.
 
-## Delayed Satisfaction / Conditional Template
+## Delayed Satisfaction / Conditional Template [TODO]
 
 Oftentimes we don't want to transform the original native html into the more robust markup until the needed downloads have finished. 
 
 And/or we want to apply a conditional transformation based on the presence of the dependencies, allowing us to decide which design library to use via import maps (or some other approach).
 
 ```html
-<ul be-metamorphic='[
-  {
-    "xslt": "./ui5.xsl",
-    "whenDefined": ["ui5-list", "ui5-li"]
-  },
-  {
-    "xslt": "./mwc.xsl",
-    "whenDefined": ["mwc-list", "mwc-list-item"]
+<ul be-metamorphic='{
+  "./ui5.xslt": {
+    "isUpSearch": false, //default
+    "when-defined": ["ui5-list", "ui5-li"]
   }
-]'
+}'
 >
 </ul>
 ```

@@ -28,7 +28,7 @@ export class BeMetamorphicController implements BeMetamorphicActions{
 
     async onMorphParams({morphParams, proxy}: this){
         for(const key in morphParams){
-            const {isUpSearch, whenDefined, mode} = morphParams[key] as MorphParam;
+            const {isUpSearch, whenDefined, mode, target} = morphParams[key] as MorphParam;
             let xsltNode: DocumentFragment | Document | undefined;
             if(isUpSearch){
                 const {upShadowSearch} = await import('trans-render/lib/upShadowSearch.js');
@@ -46,6 +46,9 @@ export class BeMetamorphicController implements BeMetamorphicActions{
             xslt.importStylesheet(xsltNode);
             const resultDocument = xslt.transformToFragment(this.#target, document);
             let appendTo = this.#target;
+            if(target !== undefined){
+                appendTo = (this.#target.getRootNode() as DocumentFragment).querySelector(target) as Element;
+            }
             switch(mode){
                 case 'replace':
                 case 'adjacentAfterEnd':

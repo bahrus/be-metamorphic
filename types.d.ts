@@ -21,4 +21,5 @@ export interface MorphParam{
     isUpSearch: boolean,
     whenDefined: string[],
     mode: 'replace' | 'append' | 'prepend' | 'adjacentAfterEnd',
+    target: string,
 }

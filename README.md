@@ -9,6 +9,7 @@ be-metamorphic let's us party like it's 1999, and take advantage of the [increas
 1.  Progressively enhance a web page by converting swaths of native HTML into web components once components are downloaded.
 2.  Use common definition of web component, based on native elements, to provide bare-bones implementation of web component or web composition, then, based on which design library is loaded, invoke the appropriate transform to morph the native elements into the design library based components.
 3.  Use tag names that are meaningful to the business, but transform them to a design library based on their presence.
+4.  Generate table of contents from large document.
 
 ```html
 

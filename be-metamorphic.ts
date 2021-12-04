@@ -70,6 +70,14 @@ export class BeMetamorphicController implements BeMetamorphicActions{
             }
         }
     }
+
+    onOn({on}: this){
+        for(const key of on){
+            this.#target.addEventListener(key, (e: Event) => {
+                this.onMorphParams(this);
+            });
+        }
+    }
     
 
 }

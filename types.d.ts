@@ -1,7 +1,8 @@
 import {BeDecoratedProps} from 'be-decorated/types';
 
 export interface BeMetamorphicVirtualProps{
-    morphParams: {[key: string]: MorphParam}
+    morphParams: {[key: string]: MorphParam},
+    on: string[],
 }
 
 export interface BeMetamorphicProps extends BeMetamorphicVirtualProps{
@@ -15,6 +16,7 @@ export interface BeMetamorphicActions{
     // onReady(self: this): void;
     intro(proxy: Element & BeMetamorphicVirtualProps, target: Element, beDecorProps: BeDecoratedProps): void;
     onMorphParams(self: this): void;
+    onOn(self: this): void;
 }
 
 export interface MorphParam{

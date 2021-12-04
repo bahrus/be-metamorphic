@@ -91,12 +91,15 @@ define({
             primaryProp: 'xslt',
             intro: 'intro',
             noParse: true,
-            virtualProps: ['morphParams'],
+            virtualProps: ['morphParams', 'on'],
             proxyPropDefaults: {}
         },
         actions: {
             onMorphParams: {
                 ifAllOf: ['morphParams'],
+            },
+            onOn: {
+                ifAllOf: ['on', 'morphParams'],
             }
         }
     },

@@ -104,7 +104,7 @@ define<BeMetamorphicProps & BeDecoratedProps<BeMetamorphicProps, BeMetamorphicAc
             primaryProp: 'xslt',
             intro: 'intro',
             noParse: true,
-            virtualProps: ['morphParams'],
+            virtualProps: ['morphParams', 'on'],
             proxyPropDefaults:{
                 
             }
@@ -112,7 +112,11 @@ define<BeMetamorphicProps & BeDecoratedProps<BeMetamorphicProps, BeMetamorphicAc
         actions:{
             onMorphParams:{
                 ifAllOf: ['morphParams'],
+            },
+            onOn:{
+                ifAllOf: ['on', 'morphParams'],
             }
+
         }
     },
     complexPropDefaults:{

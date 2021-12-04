@@ -2,6 +2,7 @@ import {define, BeDecoratedProps} from 'be-decorated/be-decorated.js';
 import {BeMetamorphicVirtualProps, BeMetamorphicProps, BeMetamorphicActions, MorphParam} from './types';
 import {register} from 'be-hive/register.js';
 
+const xsltLookup: {[key: string]: XSLTProcessor} = {};
 
 export class BeMetamorphicController implements BeMetamorphicActions{
 
@@ -29,22 +30,26 @@ export class BeMetamorphicController implements BeMetamorphicActions{
     async onMorphParams({morphParams, proxy}: this){
         for(const key in morphParams){
             const {isUpSearch, whenDefined, mode, target} = morphParams[key] as MorphParam;
-            let xsltNode: DocumentFragment | Document | undefined;
-            if(isUpSearch){
-                const {upShadowSearch} = await import('trans-render/lib/upShadowSearch.js');
-                const template = upShadowSearch(this.#target, key)! as HTMLTemplateElement;
-                xsltNode = template.content;
-            }else{
-                const resp = await fetch(key);
-                const xsltString = await resp.text();
-                xsltNode = new DOMParser().parseFromString(xsltString, 'text/xml');
+            let xsltProcessor = xsltLookup[key];
+            if(xsltProcessor === undefined){
+                let xsltNode: DocumentFragment | Document | undefined;
+                if(isUpSearch){
+                    const {upShadowSearch} = await import('trans-render/lib/upShadowSearch.js');
+                    const template = upShadowSearch(this.#target, key)! as HTMLTemplateElement;
+                    xsltNode = template.content;
+                }else{
+                    const resp = await fetch(key);
+                    const xsltString = await resp.text();
+                    xsltNode = new DOMParser().parseFromString(xsltString, 'text/xml');
+                }
+                for(const s of whenDefined){
+                    await customElements.whenDefined(s);
+                }
+                xsltProcessor = new XSLTProcessor();
+                xsltProcessor.importStylesheet(xsltNode);
+                xsltLookup[key] = xsltProcessor;
             }
-            for(const s of whenDefined){
-                await customElements.whenDefined(s);
-            }
-            const xslt = new XSLTProcessor();
-            xslt.importStylesheet(xsltNode);
-            const resultDocument = xslt.transformToFragment(this.#target, document);
+            const resultDocument = xsltProcessor.transformToFragment(this.#target, document);
             let appendTo = this.#target;
             if(target !== undefined){
                 appendTo = (this.#target.getRootNode() as DocumentFragment).querySelector(target) as Element;

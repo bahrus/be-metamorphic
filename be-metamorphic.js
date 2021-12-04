@@ -1,5 +1,6 @@
 import { define } from 'be-decorated/be-decorated.js';
 import { register } from 'be-hive/register.js';
+const xsltLookup = {};
 export class BeMetamorphicController {
     #target;
     intro(proxy, target, { ifWantsToBe, proxyPropDefaults }) {
@@ -24,23 +25,27 @@ export class BeMetamorphicController {
     async onMorphParams({ morphParams, proxy }) {
         for (const key in morphParams) {
             const { isUpSearch, whenDefined, mode, target } = morphParams[key];
-            let xsltNode;
-            if (isUpSearch) {
-                const { upShadowSearch } = await import('trans-render/lib/upShadowSearch.js');
-                const template = upShadowSearch(this.#target, key);
-                xsltNode = template.content;
+            let xsltProcessor = xsltLookup[key];
+            if (xsltProcessor === undefined) {
+                let xsltNode;
+                if (isUpSearch) {
+                    const { upShadowSearch } = await import('trans-render/lib/upShadowSearch.js');
+                    const template = upShadowSearch(this.#target, key);
+                    xsltNode = template.content;
+                }
+                else {
+                    const resp = await fetch(key);
+                    const xsltString = await resp.text();
+                    xsltNode = new DOMParser().parseFromString(xsltString, 'text/xml');
+                }
+                for (const s of whenDefined) {
+                    await customElements.whenDefined(s);
+                }
+                xsltProcessor = new XSLTProcessor();
+                xsltProcessor.importStylesheet(xsltNode);
+                xsltLookup[key] = xsltProcessor;
             }
-            else {
-                const resp = await fetch(key);
-                const xsltString = await resp.text();
-                xsltNode = new DOMParser().parseFromString(xsltString, 'text/xml');
-            }
-            for (const s of whenDefined) {
-                await customElements.whenDefined(s);
-            }
-            const xslt = new XSLTProcessor();
-            xslt.importStylesheet(xsltNode);
-            const resultDocument = xslt.transformToFragment(this.#target, document);
+            const resultDocument = xsltProcessor.transformToFragment(this.#target, document);
             let appendTo = this.#target;
             if (target !== undefined) {
                 appendTo = this.#target.getRootNode().querySelector(target);
@@ -64,6 +69,13 @@ export class BeMetamorphicController {
                 case 'replace':
                     proxy.remove();
             }
+        }
+    }
+    onOn({ on }) {
+        for (const key of on) {
+            this.#target.addEventListener(key, (e) => {
+                this.onMorphParams(this);
+            });
         }
     }
 }

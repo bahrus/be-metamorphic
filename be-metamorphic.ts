@@ -104,6 +104,7 @@ define<BeMetamorphicProps & BeDecoratedProps<BeMetamorphicProps, BeMetamorphicAc
             primaryProp: 'xslt',
             intro: 'intro',
             noParse: true,
+            forceVisible: true,
             virtualProps: ['morphParams', 'on'],
             proxyPropDefaults:{
                 

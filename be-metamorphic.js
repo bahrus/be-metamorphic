@@ -1,6 +1,7 @@
 import { define } from 'be-decorated/be-decorated.js';
 import { register } from 'be-hive/register.js';
 const xsltLookup = {};
+const nogo = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'keygen', 'link', 'meta', 'param', 'source', 'track', 'wbr'];
 export class BeMetamorphicController {
     #target;
     intro(proxy, target, { ifWantsToBe, proxyPropDefaults }) {
@@ -45,7 +46,9 @@ export class BeMetamorphicController {
                 xsltProcessor.importStylesheet(xsltNode);
                 xsltLookup[key] = xsltProcessor;
             }
+            this.swap(this.#target, true);
             const resultDocument = xsltProcessor.transformToFragment(this.#target, document);
+            this.swap(this.#target, false);
             let appendTo = this.#target;
             if (target !== undefined) {
                 appendTo = this.#target.getRootNode().querySelector(target);
@@ -77,6 +80,19 @@ export class BeMetamorphicController {
                 this.onMorphParams(this);
             });
         }
+    }
+    swap(target, toIsh) {
+        const qry = toIsh ? nogo.join(',') : nogo.join('-ish,');
+        const problemTags = target.querySelectorAll(qry);
+        problemTags.forEach(tag => {
+            const newTagName = toIsh ? tag.localName + '-ish' : tag.localName.substring(0, tag.localName.length - 4);
+            const newTag = document.createElement(newTagName);
+            for (let i = 0, ii = tag.attributes.length; i < ii; i++) {
+                newTag.setAttribute(tag.attributes[i].name, tag.attributes[i].value);
+                tag.insertAdjacentElement('afterend', newTag);
+            }
+        });
+        problemTags.forEach(tag => tag.remove());
     }
 }
 const tagName = 'be-metamorphic';

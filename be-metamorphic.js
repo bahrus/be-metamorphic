@@ -89,8 +89,8 @@ export class BeMetamorphicController {
             const newTag = document.createElement(newTagName);
             for (let i = 0, ii = tag.attributes.length; i < ii; i++) {
                 newTag.setAttribute(tag.attributes[i].name, tag.attributes[i].value);
-                tag.insertAdjacentElement('afterend', newTag);
             }
+            tag.insertAdjacentElement('afterend', newTag);
         });
         problemTags.forEach(tag => tag.remove());
     }

@@ -107,7 +107,7 @@ define({
             primaryProp: 'xslt',
             intro: 'intro',
             noParse: true,
-            forceVisible: true,
+            //forceVisible: true,
             virtualProps: ['morphParams', 'on'],
             proxyPropDefaults: {}
         },

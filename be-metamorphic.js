@@ -1,5 +1,6 @@
 import { define } from 'be-decorated/be-decorated.js';
 import { register } from 'be-hive/register.js';
+import { insertAdjacentTemplate } from 'trans-render/lib/insertAdjacentTemplate.js';
 const xsltLookup = {};
 const nogo = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'keygen', 'link', 'meta', 'param', 'source', 'track', 'wbr'];
 export class BeMetamorphicController {
@@ -103,8 +104,9 @@ export class BeMetamorphicController {
     doClone(target) {
         const clone = target.cloneNode(true);
         clone.querySelectorAll('template').forEach(template => {
-            const clone = template.content.cloneNode(true);
-            template.parentElement.appendChild(clone);
+            //const clone = template.content.cloneNode(true) as Element;
+            insertAdjacentTemplate(template, template, 'afterend');
+            template.remove();
         });
         return clone;
     }

@@ -1,6 +1,7 @@
 import {define, BeDecoratedProps} from 'be-decorated/be-decorated.js';
 import {BeMetamorphicVirtualProps, BeMetamorphicProps, BeMetamorphicActions, MorphParam} from './types';
 import {register} from 'be-hive/register.js';
+import {insertAdjacentTemplate} from 'trans-render/lib/insertAdjacentTemplate.js';
 
 const xsltLookup: {[key: string]: XSLTProcessor} = {};
 
@@ -114,8 +115,9 @@ export class BeMetamorphicController implements BeMetamorphicActions{
     doClone(target: Element){
         const clone = target.cloneNode(true) as Element;
         clone.querySelectorAll('template').forEach(template => {
-            const clone = template.content.cloneNode(true) as Element;
-            template.parentElement!.appendChild(clone);
+            //const clone = template.content.cloneNode(true) as Element;
+            insertAdjacentTemplate(template, template, 'afterend');
+            template.remove();
         });
         return clone;
     }

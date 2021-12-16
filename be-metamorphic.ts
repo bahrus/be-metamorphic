@@ -31,7 +31,7 @@ export class BeMetamorphicController implements BeMetamorphicActions{
 
     async onMorphParams({morphParams, proxy}: this){
         for(const key in morphParams){
-            const {isUpSearch, whenDefined, mode, target} = morphParams[key] as MorphParam;
+            const {isUpSearch, whenDefined, mode, target, cloneAndExpandTempl} = morphParams[key] as MorphParam;
             let xsltProcessor = xsltLookup[key];
             if(xsltProcessor === undefined){
                 let xsltNode: DocumentFragment | Document | undefined;
@@ -51,9 +51,17 @@ export class BeMetamorphicController implements BeMetamorphicActions{
                 xsltProcessor.importStylesheet(xsltNode);
                 xsltLookup[key] = xsltProcessor;
             }
-            this.swap(this.#target, true);
-            const resultDocument = xsltProcessor.transformToFragment(this.#target, document);
-            this.swap(this.#target, false);
+            let xmlSrc = this.#target;
+            if(cloneAndExpandTempl){
+                xmlSrc = this.doClone(xmlSrc);
+            }
+            this.swap(xmlSrc, true);
+
+            const resultDocument = xsltProcessor.transformToFragment(xmlSrc, document);
+            if(!cloneAndExpandTempl){
+                this.swap(xmlSrc, false);
+            }
+            
             let appendTo = this.#target;
             if(target !== undefined){
                 appendTo = (this.#target.getRootNode() as DocumentFragment).querySelector(target) as Element;
@@ -101,6 +109,15 @@ export class BeMetamorphicController implements BeMetamorphicActions{
             tag.insertAdjacentElement('afterend', newTag);
         });
         problemTags.forEach(tag => tag.remove());        
+    }
+
+    doClone(target: Element){
+        const clone = target.cloneNode(true) as Element;
+        clone.querySelectorAll('template').forEach(template => {
+            const clone = template.content.cloneNode(true) as Element;
+            template.insertAdjacentElement('afterend', clone);
+        });
+        return clone;
     }
 }
 

@@ -25,7 +25,7 @@ export class BeMetamorphicController {
     }
     async onMorphParams({ morphParams, proxy }) {
         for (const key in morphParams) {
-            const { isUpSearch, whenDefined, mode, target } = morphParams[key];
+            const { isUpSearch, whenDefined, mode, target, cloneAndExpandTempl } = morphParams[key];
             let xsltProcessor = xsltLookup[key];
             if (xsltProcessor === undefined) {
                 let xsltNode;
@@ -46,9 +46,15 @@ export class BeMetamorphicController {
                 xsltProcessor.importStylesheet(xsltNode);
                 xsltLookup[key] = xsltProcessor;
             }
-            this.swap(this.#target, true);
-            const resultDocument = xsltProcessor.transformToFragment(this.#target, document);
-            this.swap(this.#target, false);
+            let xmlSrc = this.#target;
+            if (cloneAndExpandTempl) {
+                xmlSrc = this.doClone(xmlSrc);
+            }
+            this.swap(xmlSrc, true);
+            const resultDocument = xsltProcessor.transformToFragment(xmlSrc, document);
+            if (!cloneAndExpandTempl) {
+                this.swap(xmlSrc, false);
+            }
             let appendTo = this.#target;
             if (target !== undefined) {
                 appendTo = this.#target.getRootNode().querySelector(target);
@@ -93,6 +99,14 @@ export class BeMetamorphicController {
             tag.insertAdjacentElement('afterend', newTag);
         });
         problemTags.forEach(tag => tag.remove());
+    }
+    doClone(target) {
+        const clone = target.cloneNode(true);
+        clone.querySelectorAll('template').forEach(template => {
+            const clone = template.content.cloneNode(true);
+            template.insertAdjacentElement('afterend', clone);
+        });
+        return clone;
     }
 }
 const tagName = 'be-metamorphic';

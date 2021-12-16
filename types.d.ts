@@ -24,4 +24,5 @@ export interface MorphParam{
     whenDefined: string[],
     mode: 'replace' | 'append' | 'prepend' | 'adjacentAfterEnd',
     target: string,
+    cloneAndExpandTempl: boolean,
 }

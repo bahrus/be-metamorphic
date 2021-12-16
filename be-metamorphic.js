@@ -104,7 +104,7 @@ export class BeMetamorphicController {
         const clone = target.cloneNode(true);
         clone.querySelectorAll('template').forEach(template => {
             const clone = template.content.cloneNode(true);
-            template.insertAdjacentElement('afterend', clone);
+            template.parentElement.appendChild(clone);
         });
         return clone;
     }

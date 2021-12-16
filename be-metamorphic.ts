@@ -115,7 +115,7 @@ export class BeMetamorphicController implements BeMetamorphicActions{
         const clone = target.cloneNode(true) as Element;
         clone.querySelectorAll('template').forEach(template => {
             const clone = template.content.cloneNode(true) as Element;
-            template.insertAdjacentElement('afterend', clone);
+            template.parentElement!.appendChild(clone);
         });
         return clone;
     }

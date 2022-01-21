@@ -1,6 +1,6 @@
 {
   "name": "be-metamorphic",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "Use XSLT to turn a caterpillar of native HTML markup into a butterfly of web components-filled goodness",
   "main": "be-metamorphic.js",
   "module": "be-metamorphic.js",

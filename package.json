@@ -25,9 +25,9 @@
   },
   "types": "types.d.ts",
   "dependencies": {
-    "be-decorated": "0.0.79",
-    "be-hive": "0.0.28",
-    "trans-render": "0.0.473"
+    "be-decorated": "0.0.81",
+    "be-hive": "0.0.31",
+    "trans-render": "0.0.484"
   },
   "devDependencies": {
     "xtal-test": "0.0.55",

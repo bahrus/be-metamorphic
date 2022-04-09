@@ -1,0 +1,122 @@
+
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="ts" content="2022-04-09T14:55:29.508Z">
+      <title>WC Info</title>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/wc-info/simple-ce-style.css">
+      <style>
+        template[be-lazy], template[is-lazy] {
+          height:  500px;
+          display: block;
+        }
+      </style>
+    </head>
+    <body>
+    <header class="package-header" part="package-header" itemscope itemtype="https://cdn.jsdelivr.net/npm/custom-elements-manifest@1.0.0/schema.json#definitions/Reference">
+      <xtal-side-nav></xtal-side-nav>
+      <h1 itemprop="name" class="package" part="package-title"></h1>
+    </header>
+    <main be-metamorphic='{
+      "https://cdn.jsdelivr.net/npm/wc-info/toc.xsl": {
+        "target": "xtal-side-nav",
+        "whenDefined": [],
+        "mode": "append",
+        "cloneAndExpandTempl": true
+      }
+    }'>
+    
+    <section itemscope id="xtal-side-nav">
+        <hgroup>
+          <h1 itemprop="tagName" >xtal-side-nav</h1>
+          <h2 itemprop="description"></h2>
+          <h3 itemprop="summary"></h3>
+        </hgroup>
+        
+  <table  part="table table-properties" class=properties>
+    <caption class="title">Properties</caption>
+    <thead >
+      <tr>
+    <th part="properties-name-header" class="name">name</th><th part="properties-description-header" class="description">description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr itemscope itemtype="https://cdn.jsdelivr.net/npm/custom-elements-manifest@1.0.0/schema.json#definitions/ClassField"><td  itemprop="name" part="cell properties-name-cell" class="name">open</td><td  itemprop="description" part="cell properties-description-cell" class="description">indicates if side nav is (or should be) open or not.</td></tr>
+    </tbody>
+  </table>
+        
+  <table  part="table table-attributes" class=attributes>
+    <caption class="title">Attributes</caption>
+    <thead >
+      <tr>
+    <th part="attributes-name-header" class="name">name</th><th part="attributes-description-header" class="description">description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr itemscope itemtype="https://cdn.jsdelivr.net/npm/custom-elements-manifest@1.0.0/schema.json#definitions/Attribute"><td  itemprop="name" part="cell attributes-name-cell" class="name">open</td><td  itemprop="description" part="cell attributes-description-cell" class="description">indicates if side nav is (or should be) open or not.</td></tr>
+    </tbody>
+  </table>
+        
+        
+  <table  part="table table-css-parts" class=css-parts>
+    <caption class="title">CSS Parts</caption>
+    <thead >
+      <tr>
+    <th part="css-parts-name-header" class="name">name</th><th part="css-parts-description-header" class="description">description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr itemscope itemtype="https://cdn.jsdelivr.net/npm/custom-elements-manifest@1.0.0/schema.json#definitions/CssPart"><td  itemprop="name" part="cell css-parts-name-cell" class="name">side-nav</td><td  itemprop="description" part="cell css-parts-description-cell" class="description">drawer element that opens up</td></tr><tr itemscope itemtype="https://cdn.jsdelivr.net/npm/custom-elements-manifest@1.0.0/schema.json#definitions/CssPart"><td  itemprop="name" part="cell css-parts-name-cell" class="name">opener</td><td  itemprop="description" part="cell css-parts-description-cell" class="description">button that opens up the drawer</td></tr><tr itemscope itemtype="https://cdn.jsdelivr.net/npm/custom-elements-manifest@1.0.0/schema.json#definitions/CssPart"><td  itemprop="name" part="cell css-parts-name-cell" class="name">close-btn</td><td  itemprop="description" part="cell css-parts-description-cell" class="description">button that closes the drawer</td></tr>
+    </tbody>
+  </table>
+        
+        
+        
+    </section>
+  
+    <template be-lazy>
+      <hr/>
+      <section>
+        <hgroup>
+          <h1>View Raw JSON</h1>
+        </hgroup>
+        <xtal-editor read-only key=package>
+        <textarea slot=initVal>
+        {"schemaVersion":"1.0.0","readme":"","modules":[{"kind":"javascript-module","path":"./xtal-side-nav.js","declarations":[{"tagName":"xtal-side-nav","name":"XtalSideNaveInfo","customElement":true,"members":[{"kind":"field","name":"open","description":"indicates if side nav is (or should be) open or not."}],"attributes":[{"name":"open","description":"indicates if side nav is (or should be) open or not."}],"cssParts":[{"name":"side-nav","description":"drawer element that opens up"},{"name":"opener","description":"button that opens up the drawer"},{"name":"close-btn","description":"button that closes the drawer"}],"unevaluatedNonStaticPublicFields":[{"kind":"field","name":"open","description":"indicates if side nav is (or should be) open or not."}],"methods":[]}]}]}
+        </textarea>
+        </xtal-editor>
+      </section>
+      <script type=module>
+        import('https://esm.run/xtal-editor@0.0.147');
+      </script>
+    </template>
+    </main>
+
+    <script type=importmap>
+        {
+            "imports": {
+                "trans-render/": "../node_modules/trans-render/",
+                "xtal-element/": "../node_modules/xtal-element/",
+                "be-decorated/": "../node_modules/be-decorated/",
+                "be-hive/":  "../node_modules/be-hive/"
+            }
+        }
+    </script>
+    <script type=module>
+      import('https://esm.run/be-lazy@0.0.4');
+      import('https://esm.run/xtal-side-nav@0.0.72');
+      import('../be-metamorphic.js');
+    </script>
+    <script type=module>
+      import('https://esm.run/be-lazy@0.0.4');
+      import('https://esm.run/xtal-side-nav@0.0.72');
+      import('../be-metamorphic.js');
+    </script>
+
+    </body>
+    </html>
+  

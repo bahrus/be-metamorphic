@@ -21304,11 +21304,20 @@
       </script>
         </template>
     </main>
-
+    <script type=importmap>
+        {
+            "imports": {
+                "trans-render/": "../node_modules/trans-render/",
+                "xtal-element/": "../node_modules/xtal-element/",
+                "be-decorated/": "../node_modules/be-decorated/",
+                "be-hive/":  "../node_modules/be-hive/"
+            }
+        }
+    </script>
     <script type=module>
       import('https://esm.run/be-lazy@0.0.4');
       import('https://esm.run/xtal-side-nav@0.0.72');
-      import('https://esm.run/be-metamorphic@0.0.22');
+      import('../be-metamorphic.js');
     </script>
 </body>
 

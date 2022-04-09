@@ -48,7 +48,7 @@ export class BeMetamorphicController {
             }
             let xmlSrc = this.#target;
             if (cloneAndExpandTempl) {
-                xmlSrc = this.doClone(xmlSrc);
+                xmlSrc = await this.doClone(xmlSrc);
             }
             this.swap(xmlSrc, true);
             const resultDocument = xsltProcessor.transformToFragment(xmlSrc, document);
@@ -100,14 +100,14 @@ export class BeMetamorphicController {
         });
         problemTags.forEach(tag => tag.remove());
     }
-    doClone(target) {
+    async doClone(target) {
+        const { insertAdjacentTemplate } = await import('trans-render/lib/insertAdjacentTemplate.js');
         const clone = target.cloneNode(true);
-        clone.querySelectorAll('template').forEach(async (template) => {
-            //const clone = template.content.cloneNode(true) as Element;
-            const { insertAdjacentTemplate } = await import('trans-render/lib/insertAdjacentTemplate.js');
+        const templates = Array.from(clone.querySelectorAll('template'));
+        for (const template of templates) {
             insertAdjacentTemplate(template, template, 'afterend');
             template.remove();
-        });
+        }
         return clone;
     }
 }

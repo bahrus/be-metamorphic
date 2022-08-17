@@ -1,4 +1,4 @@
-# be-metamorphic [Breaking changes afoot]
+# be-metamorphic [WIP]
 
 be-metamorphic let's us party like it's 1999, and take advantage of the [increasingly popular](https://www.chromestatus.com/metrics/feature/timeline/popularity/79) XSLT to turn a caterpillar of native HTML markup into a butterfly of web components-filled goodness.
 
@@ -10,14 +10,14 @@ be-metamorphic let's us party like it's 1999, and take advantage of the [increas
 
 ## Problem Statements
 
-1.  Progressively enhance a web page by converting swaths of native HTML into web components once components are downloaded.
+1.  Progressively enhance a web page by converting swaths of native HTML into web components once component dependencies are downloaded.
 2.  Use common definition of web component, based on native elements, to provide bare-bones implementation of web component or web composition, then, based on which design library is loaded, invoke the appropriate transform to morph the native elements into the design library based components.
 3.  Use tag names that are meaningful to the business, but transform them to a design library based on their presence.
-4.  Generate table of contents from large document.
+4.  ~~Generate table of contents from large document.~~  This will be handled by be-restated.
 
 ```html
 
-<ul>
+<ul be-metamorphic=./ui5-list.xsl>
 	<li>
     Pineapple
     <span slot=description>Occurs between red and yellow</span>
@@ -30,12 +30,11 @@ be-metamorphic let's us party like it's 1999, and take advantage of the [increas
     <span slot=additional-text>Re-stock</span>
     <span slot=additional-text-state>Error</span>   
   </li>
-  <template be-metamorphic=./ui5-list.xsl></template>
+  <template be-a-beacon></template>
 </ul>
-
 ```
 
-Combined with xslt file:
+When combined with xslt file:
 
 ```xslt
 <xsl:template match="ul" >
@@ -68,6 +67,8 @@ generates:
   </ui5-li>
 </ui5-list>
 ```
+
+The presence of the template at the bottom is needed to let be-metamorphic know it can proceed with the transformation.
 
 ## Shared template
 

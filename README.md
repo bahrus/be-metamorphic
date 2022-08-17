@@ -4,6 +4,10 @@ be-metamorphic let's us party like it's 1999, and take advantage of the [increas
 
 <a href="https://nodei.co/npm/be-netaniroguc/"><img src="https://nodei.co/npm/be-metamorphic.png"></a>
 
+[![How big is this package in your project?](https://img.shields.io/bundlephobia/minzip/be-metamorphic?style=for-the-badge)](https://bundlephobia.com/result?p=be-metamorphic)
+
+<img src="http://img.badgesize.io/https://cdn.jsdelivr.net/npm/be-metamorphic?compression=gzip">
+
 ## Problem Statements
 
 1.  Progressively enhance a web page by converting swaths of native HTML into web components once components are downloaded.

@@ -1,4 +1,4 @@
-# be-metamorphic 
+# be-metamorphic [Breaking changes afoot]
 
 be-metamorphic let's us party like it's 1999, and take advantage of the [increasingly popular](https://www.chromestatus.com/metrics/feature/timeline/popularity/79) XSLT to turn a caterpillar of native HTML markup into a butterfly of web components-filled goodness.
 
@@ -17,7 +17,7 @@ be-metamorphic let's us party like it's 1999, and take advantage of the [increas
 
 ```html
 
-<ul  be-metamorphic=./ui5-list.xsl>
+<ul>
 	<li>
     Pineapple
     <span slot=description>Occurs between red and yellow</span>
@@ -30,6 +30,7 @@ be-metamorphic let's us party like it's 1999, and take advantage of the [increas
     <span slot=additional-text>Re-stock</span>
     <span slot=additional-text-state>Error</span>   
   </li>
+  <template be-metamorphic=./ui5-list.xsl></template>
 </ul>
 
 ```
@@ -85,6 +86,7 @@ generates:
     <span slot=additional-text>Re-stock</span>
     <span slot=additional-text-state>Error</span>   
   </li>
+  <template be-metamorphic>
 </ul>
 
 <table be-metamorphic>

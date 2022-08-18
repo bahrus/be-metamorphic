@@ -10,7 +10,7 @@ be-metamorphic lets us party like it's 1999, and take advantage of the [increasi
 
 ## Problem Statements
 
-1.  Progressively enhance a web page by converting swaths of native HTML, or tag names that are meaningful to the business into web components once component dependencies are downloaded.
+1.  Progressively enhance a web page by converting swaths of native HTML, or tag names that are meaningful to the business, into web components, once component dependencies are downloaded.
 2.  ~~Generate table of contents from large document.~~  This will be handled by be-restated.
 
 ```html

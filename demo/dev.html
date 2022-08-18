@@ -7,21 +7,24 @@
     <title>Document</title>
 </head>
 <body>
-        <ul be-metamorphic>
-            <li>
-                Pineapple
-                <span slot=description>Occurs between red and yellow</span>
-                <span slot=additional-text>Expires</span>
-                <span slot=additional-text-state>Warning</span>
-            </li>
-            <li>
-            Banana
-                <span slot=description>The yellow lengthy fruit</span>
-                <span slot=additional-text>Re-stock</span>
-                <span slot=additional-text-state>Error</span>   
-            </li>
+        <div be-metamorphic>
+            <ul>
+                <li>
+                    Pineapple
+                    <span slot=description>Occurs between red and yellow</span>
+                    <span slot=additional-text>Expires</span>
+                    <span slot=additional-text-state>Warning</span>
+                </li>
+                <li>
+                Banana
+                    <span slot=description>The yellow lengthy fruit</span>
+                    <span slot=additional-text>Re-stock</span>
+                    <span slot=additional-text-state>Error</span>   
+                </li>
+            </ul>
             <template be-a-beacon></template>
-        </ul>
+        </div>
+
         
     <be-hive>
         <be-metamorphic proxy-prop-defaults='{

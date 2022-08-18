@@ -14,25 +14,26 @@ be-metamorphic lets us party like it's 1999, and take advantage of the [increasi
 2.  ~~Generate table of contents from large document.~~  This will be handled by be-restated.
 
 ```html
-
-<ul be-metamorphic='{
+<div be-metamorphic='{
     "whenDefined": ["ui5-li", "ui5-list"],
     "xslt": "./ui5-list.xslt"
 }'>
-	<li>
-    Pineapple
-    <span slot=description>Occurs between red and yellow</span>
-    <span slot=additional-text>Expires</span>
-    <span slot=additional-text-state>Warning</span>
-  </li>
-  <li>
-    Banana
-    <span slot=description>The yellow lengthy fruit</span>
-    <span slot=additional-text>Re-stock</span>
-    <span slot=additional-text-state>Error</span>   
-  </li>
+  <ul>
+    <li>
+      Pineapple
+      <span slot=description>Occurs between red and yellow</span>
+      <span slot=additional-text>Expires</span>
+      <span slot=additional-text-state>Warning</span>
+    </li>
+    <li>
+      Banana
+      <span slot=description>The yellow lengthy fruit</span>
+      <span slot=additional-text>Re-stock</span>
+      <span slot=additional-text-state>Error</span>   
+    </li>
+  </ul>
   <template be-a-beacon></template>
-</ul>
+</div>
 ```
 
 When combined with xslt file:
@@ -43,7 +44,7 @@ When combined with xslt file:
 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="/">
-    <xsl:for-each select="ul">
+    <xsl:for-each select="div/ul">
         <ui5-list style="height: 300px" growing="Scroll">
             <xsl:for-each select="li">
                 <ui5-li 
@@ -65,77 +66,49 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 generates:
 
 ```html
-<ui5-list style="height: 300px" growing="Scroll">
-  <ui5-li icon="nutrition-activity" description="Occurs between red and yellow" additional-text="Expires" additional-text-state="Warning">
-      Pineapple
-      </ui5-li>
-  <ui5-li icon="nutrition-activity" description="The yellow lengthy fruit" additional-text="Re-stock" additional-text-state="Error">
-      Banana
-  </ui5-li>
-</ui5-list>
+<div is-metamorphic>
+  <ui5-list style="height: 300px" growing="Scroll">
+    <ui5-li icon="nutrition-activity" description="Occurs between red and yellow" additional-text="Expires" additional-text-state="Warning">
+        Pineapple
+        </ui5-li>
+    <ui5-li icon="nutrition-activity" description="The yellow lengthy fruit" additional-text="Re-stock" additional-text-state="Error">
+        Banana
+    </ui5-li>
+  </ui5-list>
+  <template be-a-beacon>
+</div>
 ```
 
-The presence of the template at the bottom is needed to let be-metamorphic know it can proceed with the transformation.
+The presence of the template (be-a-beacon) at the bottom is needed to let be-metamorphic know it can proceed with the transformation.
 
 ## Shared template
 
 ```html
+<div be-metamorphic>
+  <ul>
+    <li>
+      Pineapple
+      <span slot=description>Occurs between red and yellow</span>
+      <span slot=additional-text>Expires</span>
+      <span slot=additional-text-state>Warning</span>
+    </li>
+    <li>
+      Banana
+      <span slot=description>The yellow lengthy fruit</span>
+      <span slot=additional-text>Re-stock</span>
+      <span slot=additional-text-state>Error</span>   
+    </li>
+    <template be-a-beacon>
+  </ul>
+</div>
 
-<ul  be-metamorphic>
-	<li>
-    Pineapple
-    <span slot=description>Occurs between red and yellow</span>
-    <span slot=additional-text>Expires</span>
-    <span slot=additional-text-state>Warning</span>
-  </li>
-  <li>
-    Banana
-    <span slot=description>The yellow lengthy fruit</span>
-    <span slot=additional-text>Re-stock</span>
-    <span slot=additional-text-state>Error</span>   
-  </li>
-  <template be-metamorphic>
-</ul>
-
-<table be-metamorphic>
-</table>
 <be-hive>
   <be-metamorphic proxy-prop-defaults='{
     "whenDefined": ["ui5-li", "ui5-list"],
     "xslt": "./ui5-list.xslt"
-  }'>
+  }'></be-metamorphic>
 </be-hive>
 ```
 
-If no settings are specified (like with the table), share the same settings for all the elements in the ShadowDOM realm.
-
-## Delayed Satisfaction / Conditional Template [TODO]
-
-Oftentimes we don't want to transform the original native html into the more robust markup until the needed downloads have finished. 
-
-And/or we want to apply a conditional transformation based on the presence of the dependencies, allowing us to decide which design library to use via import maps (or some other approach).
-
-```html
-<ul be-metamorphic='{
-  "./ui5.xslt": {
-    "isUpSearch": false,
-    "when-defined": ["ui5-list", "ui5-li"],
-    "mode": "replace"
-  }
-}'
->
-</ul>
-```
-
-## Specifying Target
-
-By default, the output of the xslt replaces the element that the be-metamorphic attribute is attached to.
-
-However, other "modes" are also supported:
-
-```typeScript
-export interface BeMetamorphicVirtualProps{
-  mode: 'replace' | 'append' | 'prepend' | 'adjacentAfterEnd'
-}
-```
+This shares the same settings for all the elements adorned with be-metamorphic in the ShadowDOM realm.
 

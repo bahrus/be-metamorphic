@@ -1,6 +1,7 @@
 import {define, BeDecoratedProps} from 'be-decorated/be-decorated.js';
-import {BeMetamorphicVirtualProps, BeMetamorphicProps, BeMetamorphicActions, MorphParam, P} from './types';
+import {BeMetamorphicVirtualProps, BeMetamorphicProps, BeMetamorphicActions, P} from './types';
 import {register} from 'be-hive/register.js';
+import 'be-a-beacon/be-a-beacon.js';
 
 const xsltLookup: {[key: string]: XSLTProcessor} = {};
 
@@ -9,6 +10,7 @@ export class BeMetamorphicController implements BeMetamorphicActions{
     #target!: Element
     intro(proxy: Element & BeMetamorphicVirtualProps, target: Element, {ifWantsToBe, proxyPropDefaults}: BeDecoratedProps & BeMetamorphicVirtualProps): void {
         this.#target = target;
+        Object.assign(proxy, proxyPropDefaults);
         const beacon = target.querySelector('template[be-a-beacon],template[is-a-beacon]');
         if(beacon !== null){
             proxy.beaconFound = true;
@@ -40,6 +42,7 @@ export class BeMetamorphicController implements BeMetamorphicActions{
     }
 
     async onBeaconFound({whenDefined}: this): Promise<P> {
+        console.log('beacon found');
         for(const s of whenDefined){
             await customElements.whenDefined(s);
         }
@@ -176,6 +179,9 @@ define<BeMetamorphicProps & BeDecoratedProps<BeMetamorphicProps, BeMetamorphicAc
             }
         },
         actions:{
+            onBeaconFound:{
+                ifAllOf: ['beaconFound', 'whenDefined']
+            }
             // onMorphParams:{
             //     ifAllOf: ['morphParams'],
             // },

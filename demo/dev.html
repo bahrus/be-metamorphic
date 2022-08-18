@@ -7,8 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-    
-    <ul  be-metamorphic>
+    <div be-metamorphic>
         <li>
             Pineapple
             <span slot=description>Occurs between red and yellow</span>
@@ -21,16 +20,13 @@
             <span slot=additional-text>Re-stock</span>
             <span slot=additional-text-state>Error</span>   
         </li>
-    </ul>
+        <template be-a-beacon></template>
+    </div>
     <be-hive>
         <be-metamorphic proxy-prop-defaults='{
-            "morphParams":{
-                "./ui5-list.xslt":{
-                    "whenDefined": [],
-                    "mode": "replace"
-                }
-            }
-        }'></be-metamorphic>
+            "whenDefined": ["ui5-li", "ui5-list"],
+            "xslt": "./ui5-list.xslt"
+          }'></be-metamorphic>
     </be-hive>
     <!-- JSPM.IO -->
     <script async src="https://ga.jspm.io/npm:es-module-shims@1.3.0/dist/es-module-shims.js"></script>
@@ -39,6 +35,7 @@
             "imports": {
                 "trans-render/": "../node_modules/trans-render/",
                 "xtal-element/": "../node_modules/xtal-element/",
+                "be-a-beacon/": "../node_modules/be-a-beacon/",
                 "be-decorated/": "../node_modules/be-decorated/",
                 "be-hive/":  "../node_modules/be-hive/"
             }

@@ -29,10 +29,10 @@ export interface BeMetamorphicActions{
     // onOn(self: this): void;
 }
 
-export interface MorphParam{
-    isUpSearch: boolean,
-    whenDefined: string[],
-    mode: 'replace' | 'append' | 'prepend' | 'adjacentAfterEnd',
-    //target: string,
-    cloneAndExpandTempl: boolean,
-}
+// export interface MorphParam{
+//     isUpSearch: boolean,
+//     whenDefined: string[],
+//     mode: 'replace' | 'append' | 'prepend' | 'adjacentAfterEnd',
+//     //target: string,
+//     cloneAndExpandTempl: boolean,
+// }

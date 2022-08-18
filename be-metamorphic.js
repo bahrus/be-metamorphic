@@ -1,10 +1,12 @@
 import { define } from 'be-decorated/be-decorated.js';
 import { register } from 'be-hive/register.js';
+import 'be-a-beacon/be-a-beacon.js';
 const xsltLookup = {};
 export class BeMetamorphicController {
     #target;
     intro(proxy, target, { ifWantsToBe, proxyPropDefaults }) {
         this.#target = target;
+        Object.assign(proxy, proxyPropDefaults);
         const beacon = target.querySelector('template[be-a-beacon],template[is-a-beacon]');
         if (beacon !== null) {
             proxy.beaconFound = true;
@@ -35,6 +37,7 @@ export class BeMetamorphicController {
         //     proxy.morphParams = morphParams;
     }
     async onBeaconFound({ whenDefined }) {
+        console.log('beacon found');
         for (const s of whenDefined) {
             await customElements.whenDefined(s);
         }
@@ -95,12 +98,15 @@ define({
             }
         },
         actions: {
-        // onMorphParams:{
-        //     ifAllOf: ['morphParams'],
-        // },
-        // onOn:{
-        //     ifAllOf: ['on', 'morphParams'],
-        // }
+            onBeaconFound: {
+                ifAllOf: ['beaconFound', 'whenDefined']
+            }
+            // onMorphParams:{
+            //     ifAllOf: ['morphParams'],
+            // },
+            // onOn:{
+            //     ifAllOf: ['on', 'morphParams'],
+            // }
         }
     },
     complexPropDefaults: {

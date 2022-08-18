@@ -16,7 +16,7 @@ be-metamorphic let's us party like it's 1999, and take advantage of the [increas
 ```html
 
 <ul be-metamorphic='{
-    "whenDefined": ["ui5-li", "ui5-list"]
+    "whenDefined": ["ui5-li", "ui5-list"],
     "xslt": "./ui5-list.xslt"
 }'>
 	<li>
@@ -95,11 +95,8 @@ The presence of the template at the bottom is needed to let be-metamorphic know 
 </table>
 <be-hive>
   <be-metamorphic proxy-prop-defaults='{
-    "./ui5.xslt": {
-      "isUpSearch": false,
-      "when-defined": ["ui5-list", "ui5-li"],
-      "mode": "replace"
-    }
+    "whenDefined": ["ui5-li", "ui5-list"],
+    "xslt": "./ui5-list.xslt"
   }'>
 </be-hive>
 ```

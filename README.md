@@ -10,14 +10,15 @@ be-metamorphic let's us party like it's 1999, and take advantage of the [increas
 
 ## Problem Statements
 
-1.  Progressively enhance a web page by converting swaths of native HTML into web components once component dependencies are downloaded.
-2.  Use common definition of web component, based on native elements, to provide bare-bones implementation of web component or web composition, then, based on which design library is loaded, invoke the appropriate transform to morph the native elements into the design library based components.
-3.  Use tag names that are meaningful to the business, but transform them to a design library based on their presence.
-4.  ~~Generate table of contents from large document.~~  This will be handled by be-restated.
+1.  Progressively enhance a web page by converting swaths of native HTML, or tag names that are meaningful to the business into web components once component dependencies are downloaded.
+2.  ~~Generate table of contents from large document.~~  This will be handled by be-restated.
 
 ```html
 
-<ul be-metamorphic=./ui5-list.xsl>
+<ul be-metamorphic='{
+    "whenDefined": ["ui5-li", "ui5-list"]
+    "xslt": "./ui5-list.xslt"
+}'>
 	<li>
     Pineapple
     <span slot=description>Occurs between red and yellow</span>

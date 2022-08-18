@@ -1,114 +1,79 @@
 import { define } from 'be-decorated/be-decorated.js';
 import { register } from 'be-hive/register.js';
 const xsltLookup = {};
-const nogo = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'keygen', 'link', 'meta', 'param', 'source', 'track', 'wbr'];
 export class BeMetamorphicController {
     #target;
     intro(proxy, target, { ifWantsToBe, proxyPropDefaults }) {
         this.#target = target;
-        const attr = target.getAttribute(`is-${ifWantsToBe}`).trim();
-        const morphParams = { ...proxyPropDefaults.morphParams };
-        if (attr.length > 0) {
-            if (attr[0] === '{') {
-                Object.assign(morphParams, JSON.parse(attr));
-            }
-            else {
-                Object.assign(morphParams, {
-                    attr: {
-                        mode: 'replace',
-                        whenDefined: [],
-                    }
-                });
-            }
+        const beacon = target.querySelector('template[be-a-beacon],template[is-a-beacon]');
+        if (beacon !== null) {
+            proxy.beaconFound = true;
         }
-        proxy.morphParams = morphParams;
-    }
-    async onMorphParams({ morphParams, proxy }) {
-        for (const key in morphParams) {
-            const { isUpSearch, whenDefined, mode, target, cloneAndExpandTempl } = morphParams[key];
-            let xsltProcessor = xsltLookup[key];
-            if (xsltProcessor === undefined) {
-                let xsltNode;
-                if (isUpSearch) {
-                    const { upShadowSearch } = await import('trans-render/lib/upShadowSearch.js');
-                    const template = upShadowSearch(this.#target, key);
-                    xsltNode = template.content;
-                }
-                else {
-                    const resp = await fetch(key);
-                    const xsltString = await resp.text();
-                    xsltNode = new DOMParser().parseFromString(xsltString, 'text/xml');
-                }
-                for (const s of whenDefined) {
-                    await customElements.whenDefined(s);
-                }
-                xsltProcessor = new XSLTProcessor();
-                xsltProcessor.importStylesheet(xsltNode);
-                xsltLookup[key] = xsltProcessor;
-            }
-            let xmlSrc = this.#target;
-            if (cloneAndExpandTempl) {
-                xmlSrc = await this.doClone(xmlSrc);
-            }
-            this.swap(xmlSrc, true);
-            const resultDocument = xsltProcessor.transformToFragment(xmlSrc, document);
-            if (!cloneAndExpandTempl) {
-                this.swap(xmlSrc, false);
-            }
-            let appendTo = this.#target;
-            if (target !== undefined) {
-                appendTo = this.#target.getRootNode().querySelector(target);
-            }
-            switch (mode) {
-                case 'replace':
-                case 'adjacentAfterEnd':
-                    for (const childNode of resultDocument.children) {
-                        appendTo.insertAdjacentElement('afterend', childNode);
-                        appendTo = childNode;
-                    }
-                    break;
-                case 'append':
-                    appendTo.append(resultDocument);
-                    break;
-                case 'prepend':
-                    appendTo.prepend(resultDocument);
-                    break;
-            }
-            switch (mode) {
-                case 'replace':
-                    proxy.remove();
-            }
-        }
-    }
-    onOn({ on }) {
-        for (const key of on) {
-            this.#target.addEventListener(key, (e) => {
-                this.onMorphParams(this);
+        else {
+            target.addEventListener('i-am-here', e => {
+                proxy.beaconFound = true;
+            }, {
+                once: true,
+                capture: true,
             });
         }
+        //     this.#target = target;
+        //     const attr = target.getAttribute(`is-${ifWantsToBe}`)!.trim();
+        //     const morphParams = {...proxyPropDefaults.morphParams};
+        //     if(attr.length > 0){
+        //         if(attr[0] === '{'){
+        //             Object.assign(morphParams, JSON.parse(attr));
+        //         }else{
+        //             Object.assign(morphParams, {
+        //                 attr:{
+        //                     mode: 'replace',
+        //                     whenDefined: [],
+        //                 }
+        //             })
+        //         }
+        //     }
+        //     proxy.morphParams = morphParams;
     }
-    swap(target, toIsh) {
-        const qry = toIsh ? nogo.join(',') : nogo.join('-ish,');
-        const problemTags = target.querySelectorAll(qry);
-        problemTags.forEach(tag => {
-            const newTagName = toIsh ? tag.localName + '-ish' : tag.localName.substring(0, tag.localName.length - 4);
-            const newTag = document.createElement(newTagName);
-            for (let i = 0, ii = tag.attributes.length; i < ii; i++) {
-                newTag.setAttribute(tag.attributes[i].name, tag.attributes[i].value);
-            }
-            tag.insertAdjacentElement('afterend', newTag);
-        });
-        problemTags.forEach(tag => tag.remove());
-    }
-    async doClone(target) {
-        const { insertAdjacentTemplate } = await import('trans-render/lib/insertAdjacentTemplate.js');
-        const clone = target.cloneNode(true);
-        const templates = Array.from(clone.querySelectorAll('template'));
-        for (const template of templates) {
-            insertAdjacentTemplate(template, template, 'afterend');
-            template.remove();
+    async onBeaconFound({ whenDefined }) {
+        for (const s of whenDefined) {
+            await customElements.whenDefined(s);
         }
-        return clone;
+        return {
+            dependenciesLoaded: true,
+        };
+    }
+    async onDependenciesLoaded({ xslt }) {
+        let xsltProcessor = xsltLookup[xslt];
+        if (xsltProcessor !== undefined) {
+            return {
+                xsltProcessor
+            };
+        }
+        const resp = await fetch(xslt);
+        const xsltString = await resp.text();
+        const xsltNode = new DOMParser().parseFromString(xsltString, 'text/xml');
+        xsltProcessor = new XSLTProcessor();
+        xsltProcessor.importStylesheet(xsltNode);
+        xsltLookup[xslt] = xsltProcessor;
+        return {
+            xsltProcessor
+        };
+    }
+    async onXSLTProcessor({ expandTempl, xsltProcessor }) {
+        let xmlSrc = this.#target;
+        if (expandTempl) {
+            const { clone } = await import('trans-render/xslt/clone.js');
+            xmlSrc = clone(xmlSrc);
+        }
+        const { swap } = await import('trans-render/xslt/swap.js');
+        swap(xmlSrc, true);
+        const resultDocument = xsltProcessor.transformToFragment(xmlSrc, document);
+        this.#target.innerHTML = '';
+        this.#target.append(resultDocument);
+        //         if(!cloneAndExpandTempl){
+        //             swap(xmlSrc, false);
+        //         }
+        return {};
     }
 }
 const tagName = 'be-metamorphic';
@@ -123,16 +88,19 @@ define({
             primaryProp: 'xslt',
             intro: 'intro',
             noParse: true,
-            virtualProps: ['morphParams', 'on'],
-            proxyPropDefaults: {}
+            virtualProps: ['beaconFound', 'xslt', 'whenDefined', 'expandTempl', 'xsltProcessor'],
+            proxyPropDefaults: {
+                beaconFound: false,
+                expandTempl: false,
+            }
         },
         actions: {
-            onMorphParams: {
-                ifAllOf: ['morphParams'],
-            },
-            onOn: {
-                ifAllOf: ['on', 'morphParams'],
-            }
+        // onMorphParams:{
+        //     ifAllOf: ['morphParams'],
+        // },
+        // onOn:{
+        //     ifAllOf: ['on', 'morphParams'],
+        // }
         }
     },
     complexPropDefaults: {

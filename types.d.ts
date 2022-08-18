@@ -1,28 +1,38 @@
 import {BeDecoratedProps} from 'be-decorated/types';
 
-export interface BeMetamorphicVirtualProps{
-    morphParams: {[key: string]: MorphParam},
-    on: string[],
+export interface BeMetaMorphicEndUserProps {
+    whenDefined: string[],
+    xslt: string,
+    xsltProcessor: XSLTProcessor,
+    /**
+     * Clone and expand templates contained within the DOM before applying xslt
+     */
+    expandTempl: boolean,
+}
+export interface BeMetamorphicVirtualProps extends BeMetaMorphicEndUserProps{
+    beaconFound: boolean;
+    dependenciesLoaded: boolean;
 }
 
 export interface BeMetamorphicProps extends BeMetamorphicVirtualProps{
     proxy: Element & BeMetamorphicVirtualProps
 }
 
+export type P = Partial<Element & BeMetamorphicVirtualProps>;
+
 export interface BeMetamorphicActions{
-    // onXslt(self: this): Promise<{xsltNode: Node}>;
-    // onXsltSearch(self: this): Promise<{xsltNode: Node}>;
-    // onWhenDefined(self: this): Promise<{areDefined: boolean}>;
-    // onReady(self: this): void;
     intro(proxy: Element & BeMetamorphicVirtualProps, target: Element, beDecorProps: BeDecoratedProps): void;
-    onMorphParams(self: this): void;
-    onOn(self: this): void;
+    onBeaconFound(self: this): Promise<P>;
+    onDependenciesLoaded(self: this): Promise<P>;
+    onXSLTProcessor(self: this): Promise<P>;
+    // onMorphParams(self: this): void;
+    // onOn(self: this): void;
 }
 
 export interface MorphParam{
     isUpSearch: boolean,
     whenDefined: string[],
     mode: 'replace' | 'append' | 'prepend' | 'adjacentAfterEnd',
-    target: string,
+    //target: string,
     cloneAndExpandTempl: boolean,
 }

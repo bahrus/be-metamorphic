@@ -42,7 +42,6 @@ export class BeMetamorphicController implements BeMetamorphicActions{
     }
 
     async onBeaconFound({whenDefined}: this): Promise<P> {
-        console.log('beacon found');
         for(const s of whenDefined){
             await customElements.whenDefined(s);
         }
@@ -52,6 +51,7 @@ export class BeMetamorphicController implements BeMetamorphicActions{
     }
 
     async onDependenciesLoaded({xslt}: this): Promise<P> {
+        console.log('dependencies loaded');
         let xsltProcessor = xsltLookup[xslt];
         if(xsltProcessor !== undefined){
             return {
@@ -172,7 +172,7 @@ define<BeMetamorphicProps & BeDecoratedProps<BeMetamorphicProps, BeMetamorphicAc
             primaryProp: 'xslt',
             intro: 'intro',
             noParse: true,
-            virtualProps: ['beaconFound', 'xslt', 'whenDefined', 'expandTempl', 'xsltProcessor'],
+            virtualProps: ['beaconFound', 'xslt', 'whenDefined', 'expandTempl', 'xsltProcessor', 'dependenciesLoaded'],
             proxyPropDefaults:{
                 beaconFound: false,
                 expandTempl: false,
@@ -181,7 +181,9 @@ define<BeMetamorphicProps & BeDecoratedProps<BeMetamorphicProps, BeMetamorphicAc
         actions:{
             onBeaconFound:{
                 ifAllOf: ['beaconFound', 'whenDefined']
-            }
+            },
+            onDependenciesLoaded: 'dependenciesLoaded',
+            onXSLTProcessor: 'xsltProcessor',
             // onMorphParams:{
             //     ifAllOf: ['morphParams'],
             // },

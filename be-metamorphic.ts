@@ -5,14 +5,19 @@ import 'be-a-beacon/be-a-beacon.js';
 
 const xsltLookup: {[key: string]: XSLTProcessor} = {};
 
-export class BeMetamorphicController implements BeMetamorphicActions{
+export class BeMetamorphic implements BeMetamorphicActions{
 
     #target!: Element
     intro(proxy: Element & BeMetamorphicVirtualProps, target: Element, {ifWantsToBe, proxyPropDefaults}: BeDecoratedProps & BeMetamorphicVirtualProps): void {
+        console.log('intro');
         this.#target = target;
-        Object.assign(proxy, proxyPropDefaults);
+    }
+
+    async onWhenDefined({proxy, whenDefined}: this): Promise<void>{
+        const target = this.#target;
         const beacon = target.querySelector('template[be-a-beacon],template[is-a-beacon]');
         if(beacon !== null){
+            console.log('set beacon found');
             proxy.beaconFound = true;
         }else{
             target.addEventListener('i-am-here', e => {
@@ -25,15 +30,18 @@ export class BeMetamorphicController implements BeMetamorphicActions{
     }
 
     async onBeaconFound({whenDefined}: this): Promise<P> {
+        console.log('onBeaconFound');
         for(const s of whenDefined){
             await customElements.whenDefined(s);
         }
+        console.log('dependencies loaded');
         return {
             dependenciesLoaded: true,
         }
     }
 
     async onDependenciesLoaded({xslt}: this): Promise<P> {
+        console.log('onDependenciesLoaded');
         let xsltProcessor = xsltLookup[xslt];
         if(xsltProcessor !== undefined){
             return {
@@ -70,7 +78,7 @@ export class BeMetamorphicController implements BeMetamorphicActions{
 
 }
 
-export interface BeMetamorphicController extends BeMetamorphicProps{}
+export interface BeMetamorphic extends BeMetamorphicProps{}
 
 const tagName = 'be-metamorphic';
 
@@ -86,7 +94,6 @@ define<BeMetamorphicProps & BeDecoratedProps<BeMetamorphicProps, BeMetamorphicAc
             ifWantsToBe,
             primaryProp: 'xslt',
             intro: 'intro',
-            noParse: true,
             virtualProps: ['beaconFound', 'xslt', 'whenDefined', 'expandTempl', 'xsltProcessor', 'dependenciesLoaded'],
             proxyPropDefaults:{
                 beaconFound: false,
@@ -97,19 +104,13 @@ define<BeMetamorphicProps & BeDecoratedProps<BeMetamorphicProps, BeMetamorphicAc
             onBeaconFound:{
                 ifAllOf: ['beaconFound', 'whenDefined']
             },
+            onWhenDefined: 'whenDefined',
             onDependenciesLoaded: 'dependenciesLoaded',
             onXSLTProcessor: 'xsltProcessor',
-            // onMorphParams:{
-            //     ifAllOf: ['morphParams'],
-            // },
-            // onOn:{
-            //     ifAllOf: ['on', 'morphParams'],
-            // }
-
         }
     },
     complexPropDefaults:{
-        controller: BeMetamorphicController,
+        controller: BeMetamorphic,
     }
 });
 

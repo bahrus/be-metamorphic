@@ -112,3 +112,7 @@ The presence of the template (be-a-beacon) at the bottom is needed to let be-met
 
 This shares the same settings for all the elements adorned with be-metamorphic in the ShadowDOM realm.
 
+## Inlining the template
+
+If no xslt property is specified, and the beacon template has non trivial content, see if the content is an xslt transform.
+

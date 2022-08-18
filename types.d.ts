@@ -3,7 +3,6 @@ import {BeDecoratedProps} from 'be-decorated/types';
 export interface BeMetaMorphicEndUserProps {
     whenDefined: string[],
     xslt: string,
-    xsltProcessor: XSLTProcessor,
     /**
      * Clone and expand templates contained within the DOM before applying xslt
      */
@@ -12,6 +11,7 @@ export interface BeMetaMorphicEndUserProps {
 export interface BeMetamorphicVirtualProps extends BeMetaMorphicEndUserProps{
     beaconFound: boolean;
     dependenciesLoaded: boolean;
+    xsltProcessor: XSLTProcessor,
 }
 
 export interface BeMetamorphicProps extends BeMetamorphicVirtualProps{
@@ -23,16 +23,9 @@ export type P = Partial<Element & BeMetamorphicVirtualProps>;
 export interface BeMetamorphicActions{
     intro(proxy: Element & BeMetamorphicVirtualProps, target: Element, beDecorProps: BeDecoratedProps): void;
     onBeaconFound(self: this): Promise<P>;
+    onWhenDefined(self: this): Promise<void>;
     onDependenciesLoaded(self: this): Promise<P>;
     onXSLTProcessor(self: this): Promise<P>;
-    // onMorphParams(self: this): void;
-    // onOn(self: this): void;
+
 }
 
-// export interface MorphParam{
-//     isUpSearch: boolean,
-//     whenDefined: string[],
-//     mode: 'replace' | 'append' | 'prepend' | 'adjacentAfterEnd',
-//     //target: string,
-//     cloneAndExpandTempl: boolean,
-// }

@@ -1,6 +1,6 @@
-# be-metamorphic [WIP]
+# be-metamorphic
 
-be-metamorphic let's us party like it's 1999, and take advantage of the [increasingly popular](https://www.chromestatus.com/metrics/feature/timeline/popularity/79) XSLT to turn a caterpillar of native HTML markup into a butterfly of web components-filled goodness.
+be-metamorphic lets us party like it's 1999, and take advantage of the [increasingly popular](https://www.chromestatus.com/metrics/feature/timeline/popularity/79) XSLT, to turn a caterpillar of native HTML markup into a butterfly of web components-filled goodness.
 
 <a href="https://nodei.co/npm/be-netaniroguc/"><img src="https://nodei.co/npm/be-metamorphic.png"></a>
 
@@ -38,22 +38,28 @@ be-metamorphic let's us party like it's 1999, and take advantage of the [increas
 When combined with xslt file:
 
 ```xslt
-<xsl:template match="ul" >
-    <ui5-list style="height: 300px" growing="Scroll">
-        <xsl:apply-templates select="li" />
-    </ui5-list>
-</xsl:template>
-<xsl:template match="li">
+<?xml version="1.0"?>
+<xsl:stylesheet version="1.0"
+xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-    <ui5-li 
-        icon="nutrition-activity" 
-        description="{span[@slot='description']}" 
-        additional-text="{span[@slot='additional-text']}"
-        additional-text-state="{span[@slot='additional-text-state']}"
-    >
-        <xsl:value-of select="node()"/>
-    </ui5-li>
+<xsl:template match="/">
+    <xsl:for-each select="ul">
+        <ui5-list style="height: 300px" growing="Scroll">
+            <xsl:for-each select="li">
+                <ui5-li 
+                    icon="nutrition-activity" 
+                    description="{span[@slot='description']}" 
+                    additional-text="{span[@slot='additional-text']}"
+                    additional-text-state="{span[@slot='additional-text-state']}"
+                >
+                    <xsl:value-of select="node()"/>
+                </ui5-li>
+            </xsl:for-each>
+        </ui5-list>
+    </xsl:for-each>
 </xsl:template>
+
+</xsl:stylesheet>
 ```
 
 generates:

@@ -7,8 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-    <div be-metamorphic>
-        <ul>
+        <ul be-metamorphic>
             <li>
                 Pineapple
                 <span slot=description>Occurs between red and yellow</span>
@@ -21,9 +20,9 @@
                 <span slot=additional-text>Re-stock</span>
                 <span slot=additional-text-state>Error</span>   
             </li>
+            <template be-a-beacon></template>
         </ul>
-        <template be-a-beacon></template>
-    </div>
+        
     <be-hive>
         <be-metamorphic proxy-prop-defaults='{
             "whenDefined": ["ui5-li", "ui5-list"],

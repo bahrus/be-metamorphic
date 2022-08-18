@@ -3,7 +3,7 @@
 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="/">
-    <xsl:for-each select="div/ul">
+    <xsl:for-each select="ul">
         <ui5-list style="height: 300px" growing="Scroll">
             <xsl:for-each select="li">
                 <ui5-li 

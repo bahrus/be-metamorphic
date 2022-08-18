@@ -19,22 +19,6 @@ export class BeMetamorphicController {
                 capture: true,
             });
         }
-        //     this.#target = target;
-        //     const attr = target.getAttribute(`is-${ifWantsToBe}`)!.trim();
-        //     const morphParams = {...proxyPropDefaults.morphParams};
-        //     if(attr.length > 0){
-        //         if(attr[0] === '{'){
-        //             Object.assign(morphParams, JSON.parse(attr));
-        //         }else{
-        //             Object.assign(morphParams, {
-        //                 attr:{
-        //                     mode: 'replace',
-        //                     whenDefined: [],
-        //                 }
-        //             })
-        //         }
-        //     }
-        //     proxy.morphParams = morphParams;
     }
     async onBeaconFound({ whenDefined }) {
         for (const s of whenDefined) {
@@ -45,7 +29,6 @@ export class BeMetamorphicController {
         };
     }
     async onDependenciesLoaded({ xslt }) {
-        console.log('dependencies loaded');
         let xsltProcessor = xsltLookup[xslt];
         if (xsltProcessor !== undefined) {
             return {
@@ -71,11 +54,9 @@ export class BeMetamorphicController {
         const { swap } = await import('trans-render/xslt/swap.js');
         swap(xmlSrc, true);
         const resultDocument = xsltProcessor.transformToFragment(xmlSrc, document);
+        //swap(resultDocument, false);
         this.#target.innerHTML = '';
         this.#target.append(resultDocument);
-        //         if(!cloneAndExpandTempl){
-        //             swap(xmlSrc, false);
-        //         }
         return {};
     }
 }

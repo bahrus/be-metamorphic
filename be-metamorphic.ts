@@ -22,23 +22,6 @@ export class BeMetamorphicController implements BeMetamorphicActions{
                 capture: true,
             });
         }
-    //     this.#target = target;
-    //     const attr = target.getAttribute(`is-${ifWantsToBe}`)!.trim();
-    //     const morphParams = {...proxyPropDefaults.morphParams};
-    //     if(attr.length > 0){
-    //         if(attr[0] === '{'){
-    //             Object.assign(morphParams, JSON.parse(attr));
-    //         }else{
-    //             Object.assign(morphParams, {
-    //                 attr:{
-    //                     mode: 'replace',
-    //                     whenDefined: [],
-    //                 }
-    //             })
-    //         }
-            
-    //     }
-    //     proxy.morphParams = morphParams;
     }
 
     async onBeaconFound({whenDefined}: this): Promise<P> {
@@ -51,7 +34,6 @@ export class BeMetamorphicController implements BeMetamorphicActions{
     }
 
     async onDependenciesLoaded({xslt}: this): Promise<P> {
-        console.log('dependencies loaded');
         let xsltProcessor = xsltLookup[xslt];
         if(xsltProcessor !== undefined){
             return {
@@ -78,80 +60,13 @@ export class BeMetamorphicController implements BeMetamorphicActions{
         const {swap} = await import('trans-render/xslt/swap.js');
         swap(xmlSrc, true);
         const resultDocument = xsltProcessor.transformToFragment(xmlSrc, document);
+        //swap(resultDocument, false);
         this.#target.innerHTML = '';
         this.#target.append(resultDocument);
-    //         if(!cloneAndExpandTempl){
-    //             swap(xmlSrc, false);
-    //         }
         return {}
     }
 
-    // async onMorphParams({morphParams, proxy}: this){
-    //     const {swap} = await import('trans-render/xslt/swap.js');
-    //     for(const key in morphParams){
-    //         const {isUpSearch, whenDefined, mode, cloneAndExpandTempl} = morphParams[key] as MorphParam;
-    //         let xsltProcessor = xsltLookup[key];
-    //         if(xsltProcessor === undefined){
-    //             let xsltNode: DocumentFragment | Document | undefined;
-    //             if(isUpSearch){
-    //                 const {upShadowSearch} = await import('trans-render/lib/upShadowSearch.js');
-    //                 const template = upShadowSearch(this.#target, key)! as HTMLTemplateElement;
-    //                 xsltNode = template.content;
-    //             }else{
-    //                 const resp = await fetch(key);
-    //                 const xsltString = await resp.text();
-    //                 xsltNode = new DOMParser().parseFromString(xsltString, 'text/xml');
-    //             }
-    //             for(const s of whenDefined){
-    //                 await customElements.whenDefined(s);
-    //             }
-    //             xsltProcessor = new XSLTProcessor();
-    //             xsltProcessor.importStylesheet(xsltNode);
-    //             xsltLookup[key] = xsltProcessor;
-    //         }
-    //         let xmlSrc = this.#target;
-    //         if(cloneAndExpandTempl){
-    //             const {clone} = await import('trans-render/xslt/clone.js');
-    //             xmlSrc = clone(xmlSrc);
-    //         }
-            
-    //         swap(xmlSrc, true);
 
-    //         const resultDocument = xsltProcessor.transformToFragment(xmlSrc, document);
-    //         if(!cloneAndExpandTempl){
-    //             swap(xmlSrc, false);
-    //         }
-            
-    //         let appendTo = this.#target;
-    //         switch(mode){
-    //             case 'replace':
-    //             case 'adjacentAfterEnd':
-    //                 for(const childNode of resultDocument.children){
-    //                     appendTo.insertAdjacentElement('afterend', childNode);
-    //                     appendTo = childNode;
-    //                 }
-    //                 break;
-    //             case 'append':
-    //                 appendTo.append(resultDocument);
-    //                 break;
-    //             case 'prepend':
-    //                 appendTo.prepend(resultDocument);
-    //                 break;
-    //         }
-    //         switch(mode){
-    //             case 'replace':
-    //                 proxy.remove();
-    //         }
-    //     }
-    // }
-
-    // onOn({on}: this){
-    //     for(const key of on){
-    //         this.#target.addEventListener(key, (e: Event) => {
-    //             this.onMorphParams(this);
-    //         });
-    //     }
-    // }
 
 }
 

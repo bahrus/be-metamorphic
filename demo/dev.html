@@ -8,18 +8,20 @@
 </head>
 <body>
     <div be-metamorphic>
-        <li>
-            Pineapple
-            <span slot=description>Occurs between red and yellow</span>
-            <span slot=additional-text>Expires</span>
-            <span slot=additional-text-state>Warning</span>
-        </li>
-        <li>
-        Banana
-            <span slot=description>The yellow lengthy fruit</span>
-            <span slot=additional-text>Re-stock</span>
-            <span slot=additional-text-state>Error</span>   
-        </li>
+        <ul>
+            <li>
+                Pineapple
+                <span slot=description>Occurs between red and yellow</span>
+                <span slot=additional-text>Expires</span>
+                <span slot=additional-text-state>Warning</span>
+            </li>
+            <li>
+            Banana
+                <span slot=description>The yellow lengthy fruit</span>
+                <span slot=additional-text>Re-stock</span>
+                <span slot=additional-text-state>Error</span>   
+            </li>
+        </ul>
         <template be-a-beacon></template>
     </div>
     <be-hive>
@@ -47,8 +49,11 @@
     <script type=module>
         import '../be-metamorphic.js';
         import 'be-hive/be-hive.js';
+        import '@ui5/webcomponents-icons/dist/nutrition-activity.js';
+        import "@ui5/webcomponents-icons/dist/AllIcons.js";
         import "@ui5/webcomponents/dist/List.js"; // ui5-list
         import "@ui5/webcomponents/dist/StandardListItem.js"; // ui5-li
+        
     </script>
 </body>
 </html>

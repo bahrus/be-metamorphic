@@ -2,14 +2,15 @@ import {define, BeDecoratedProps} from 'be-decorated/be-decorated.js';
 import {BeMetamorphicVirtualProps, BeMetamorphicProps, BeMetamorphicActions, P} from './types';
 import {register} from 'be-hive/register.js';
 import 'be-a-beacon/be-a-beacon.js';
+import {Mgmt} from 'trans-render/xslt/Mgmt.js';
 
 const xsltLookup: {[key: string]: XSLTProcessor} = {};
 
 export class BeMetamorphic implements BeMetamorphicActions{
 
-    #target!: Element
+    #target!: Element;
+    #xsltMgmt = new Mgmt();
     intro(proxy: Element & BeMetamorphicVirtualProps, target: Element, {ifWantsToBe, proxyPropDefaults}: BeDecoratedProps & BeMetamorphicVirtualProps): void {
-        console.log('intro');
         this.#target = target;
     }
 
@@ -17,7 +18,6 @@ export class BeMetamorphic implements BeMetamorphicActions{
         const target = this.#target;
         const beacon = target.querySelector('template[be-a-beacon],template[is-a-beacon]');
         if(beacon !== null){
-            console.log('set beacon found');
             proxy.beaconFound = true;
         }else{
             target.addEventListener('i-am-here', e => {
@@ -30,30 +30,16 @@ export class BeMetamorphic implements BeMetamorphicActions{
     }
 
     async onBeaconFound({whenDefined}: this): Promise<P> {
-        console.log('onBeaconFound');
         for(const s of whenDefined){
             await customElements.whenDefined(s);
         }
-        console.log('dependencies loaded');
         return {
             dependenciesLoaded: true,
         }
     }
 
     async onDependenciesLoaded({xslt}: this): Promise<P> {
-        console.log('onDependenciesLoaded');
-        let xsltProcessor = xsltLookup[xslt];
-        if(xsltProcessor !== undefined){
-            return {
-                xsltProcessor
-            };
-        } 
-        const resp = await fetch(xslt);
-        const xsltString = await resp.text();
-        const xsltNode = new DOMParser().parseFromString(xsltString, 'text/xml');
-        xsltProcessor = new XSLTProcessor();
-        xsltProcessor.importStylesheet(xsltNode);
-        xsltLookup[xslt] = xsltProcessor;
+        const xsltProcessor = await this.#xsltMgmt.getProcessor(xslt);
         return {
             xsltProcessor
         };

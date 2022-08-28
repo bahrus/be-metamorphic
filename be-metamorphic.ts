@@ -6,21 +6,16 @@ import {Mgmt} from 'trans-render/xslt/Mgmt.js';
 
 const xsltLookup: {[key: string]: XSLTProcessor} = {};
 
-export class BeMetamorphic implements BeMetamorphicActions{
+export class BeMetamorphic extends EventTarget implements BeMetamorphicActions{
 
-    #target!: Element;
     #xsltMgmt = new Mgmt();
-    intro(proxy: Element & BeMetamorphicVirtualProps, target: Element, {ifWantsToBe, proxyPropDefaults}: BeDecoratedProps & BeMetamorphicVirtualProps): void {
-        this.#target = target;
-    }
 
-    async onWhenDefined({proxy, whenDefined}: this): Promise<void>{
-        const target = this.#target;
-        const beacon = target.querySelector('template[be-a-beacon],template[is-a-beacon]');
+    async onWhenDefined({proxy, whenDefined, self}: this): Promise<void>{
+        const beacon = self.querySelector('template[be-a-beacon],template[is-a-beacon]');
         if(beacon !== null){
             proxy.beaconFound = true;
         }else{
-            target.addEventListener('i-am-here', e => {
+            self.addEventListener('i-am-here', e => {
                 proxy.beaconFound = true;
             }, {
                 once: true,
@@ -45,8 +40,8 @@ export class BeMetamorphic implements BeMetamorphicActions{
         };
     }
 
-    async onXSLTProcessor({expandTempl, xsltProcessor}: this): Promise<P> {
-        let xmlSrc = this.#target;
+    async onXSLTProcessor({expandTempl, xsltProcessor, self}: this): Promise<P> {
+        let xmlSrc = self;
         if(expandTempl){
             const {clone} = await import('trans-render/xslt/clone.js');
             xmlSrc = clone(xmlSrc);
@@ -55,8 +50,8 @@ export class BeMetamorphic implements BeMetamorphicActions{
         swap(xmlSrc, true);
         const resultDocument = xsltProcessor.transformToFragment(xmlSrc, document);
         //swap(resultDocument, false);
-        this.#target.innerHTML = '';
-        this.#target.append(resultDocument);
+        self.innerHTML = '';
+        self.append(resultDocument);
         return {}
     }
 
@@ -79,7 +74,6 @@ define<BeMetamorphicProps & BeDecoratedProps<BeMetamorphicProps, BeMetamorphicAc
             upgrade,
             ifWantsToBe,
             primaryProp: 'xslt',
-            intro: 'intro',
             virtualProps: ['beaconFound', 'xslt', 'whenDefined', 'expandTempl', 'xsltProcessor', 'dependenciesLoaded'],
             proxyPropDefaults:{
                 beaconFound: false,

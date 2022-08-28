@@ -2,7 +2,7 @@
 
 be-metamorphic lets us party like it's 1999, and take advantage of the [increasingly popular](https://www.chromestatus.com/metrics/feature/timeline/popularity/79) XSLT, to turn a caterpillar of native HTML markup into a butterfly of web components-filled goodness.
 
-<a href="https://nodei.co/npm/be-netaniroguc/"><img src="https://nodei.co/npm/be-metamorphic.png"></a>
+<a href="https://nodei.co/npm/be-metamorphic/"><img src="https://nodei.co/npm/be-metamorphic.png"></a>
 
 [![How big is this package in your project?](https://img.shields.io/bundlephobia/minzip/be-metamorphic?style=for-the-badge)](https://bundlephobia.com/result?p=be-metamorphic)
 

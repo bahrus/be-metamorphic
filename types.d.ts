@@ -1,4 +1,4 @@
-import {BeDecoratedProps} from 'be-decorated/types';
+import {BeDecoratedProps, MinimalProxy} from 'be-decorated/types';
 
 export interface BeMetaMorphicEndUserProps {
     whenDefined: string[],
@@ -8,7 +8,7 @@ export interface BeMetaMorphicEndUserProps {
      */
     expandTempl: boolean,
 }
-export interface BeMetamorphicVirtualProps extends BeMetaMorphicEndUserProps{
+export interface BeMetamorphicVirtualProps extends BeMetaMorphicEndUserProps, MinimalProxy{
     beaconFound: boolean;
     dependenciesLoaded: boolean;
     xsltProcessor: XSLTProcessor,
@@ -21,7 +21,6 @@ export interface BeMetamorphicProps extends BeMetamorphicVirtualProps{
 export type P = Partial<Element & BeMetamorphicVirtualProps>;
 
 export interface BeMetamorphicActions{
-    intro(proxy: Element & BeMetamorphicVirtualProps, target: Element, beDecorProps: BeDecoratedProps): void;
     onBeaconFound(self: this): Promise<P>;
     onWhenDefined(self: this): Promise<void>;
     onDependenciesLoaded(self: this): Promise<P>;

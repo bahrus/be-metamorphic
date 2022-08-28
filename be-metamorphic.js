@@ -3,20 +3,15 @@ import { register } from 'be-hive/register.js';
 import 'be-a-beacon/be-a-beacon.js';
 import { Mgmt } from 'trans-render/xslt/Mgmt.js';
 const xsltLookup = {};
-export class BeMetamorphic {
-    #target;
+export class BeMetamorphic extends EventTarget {
     #xsltMgmt = new Mgmt();
-    intro(proxy, target, { ifWantsToBe, proxyPropDefaults }) {
-        this.#target = target;
-    }
-    async onWhenDefined({ proxy, whenDefined }) {
-        const target = this.#target;
-        const beacon = target.querySelector('template[be-a-beacon],template[is-a-beacon]');
+    async onWhenDefined({ proxy, whenDefined, self }) {
+        const beacon = self.querySelector('template[be-a-beacon],template[is-a-beacon]');
         if (beacon !== null) {
             proxy.beaconFound = true;
         }
         else {
-            target.addEventListener('i-am-here', e => {
+            self.addEventListener('i-am-here', e => {
                 proxy.beaconFound = true;
             }, {
                 once: true,
@@ -38,8 +33,8 @@ export class BeMetamorphic {
             xsltProcessor
         };
     }
-    async onXSLTProcessor({ expandTempl, xsltProcessor }) {
-        let xmlSrc = this.#target;
+    async onXSLTProcessor({ expandTempl, xsltProcessor, self }) {
+        let xmlSrc = self;
         if (expandTempl) {
             const { clone } = await import('trans-render/xslt/clone.js');
             xmlSrc = clone(xmlSrc);
@@ -48,8 +43,8 @@ export class BeMetamorphic {
         swap(xmlSrc, true);
         const resultDocument = xsltProcessor.transformToFragment(xmlSrc, document);
         //swap(resultDocument, false);
-        this.#target.innerHTML = '';
-        this.#target.append(resultDocument);
+        self.innerHTML = '';
+        self.append(resultDocument);
         return {};
     }
 }
@@ -63,7 +58,6 @@ define({
             upgrade,
             ifWantsToBe,
             primaryProp: 'xslt',
-            intro: 'intro',
             virtualProps: ['beaconFound', 'xslt', 'whenDefined', 'expandTempl', 'xsltProcessor', 'dependenciesLoaded'],
             proxyPropDefaults: {
                 beaconFound: false,

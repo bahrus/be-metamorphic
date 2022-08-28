@@ -33,7 +33,7 @@ export class BeMetamorphic extends EventTarget {
             xsltProcessor
         };
     }
-    async onXSLTProcessor({ expandTempl, xsltProcessor, self }) {
+    async onXSLTProcessor({ expandTempl, xsltProcessor, self, proxy }) {
         let xmlSrc = self;
         if (expandTempl) {
             const { clone } = await import('trans-render/xslt/clone.js');
@@ -45,6 +45,7 @@ export class BeMetamorphic extends EventTarget {
         //swap(resultDocument, false);
         self.innerHTML = '';
         self.append(resultDocument);
+        proxy.resolved = true;
         return {};
     }
 }

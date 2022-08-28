@@ -40,7 +40,7 @@ export class BeMetamorphic extends EventTarget implements BeMetamorphicActions{
         };
     }
 
-    async onXSLTProcessor({expandTempl, xsltProcessor, self}: this): Promise<P> {
+    async onXSLTProcessor({expandTempl, xsltProcessor, self, proxy}: this): Promise<P> {
         let xmlSrc = self;
         if(expandTempl){
             const {clone} = await import('trans-render/xslt/clone.js');
@@ -52,6 +52,7 @@ export class BeMetamorphic extends EventTarget implements BeMetamorphicActions{
         //swap(resultDocument, false);
         self.innerHTML = '';
         self.append(resultDocument);
+        proxy.resolved = true;
         return {}
     }
 

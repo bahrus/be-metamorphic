@@ -25,7 +25,7 @@ export class BeMetamorphic extends EventTarget implements Actions{
     }
 
     async onBeaconFound({whenDefined}: PP): Promise<P> {
-        for(const s of whenDefined){
+        for(const s of whenDefined!){
             await customElements.whenDefined(s);
         }
         return {
@@ -34,7 +34,7 @@ export class BeMetamorphic extends EventTarget implements Actions{
     }
 
     async onDependenciesLoaded({xslt}: PP): Promise<P> {
-        const xsltProcessor = await this.#xsltMgmt.getProcessor(xslt);
+        const xsltProcessor = await this.#xsltMgmt.getProcessor(xslt!);
         return {
             xsltProcessor
         };

@@ -1,30 +1,34 @@
 import {BeDecoratedProps, MinimalProxy} from 'be-decorated/types';
 
-export interface BeMetaMorphicEndUserProps {
-    whenDefined: string[],
-    xslt: string,
+export interface EndUserProps {
+    whenDefined?: string[],
+    xslt?: string,
     /**
      * Clone and expand templates contained within the DOM before applying xslt
      */
-    expandTempl: boolean,
+    expandTempl?: boolean,
 }
-export interface BeMetamorphicVirtualProps extends BeMetaMorphicEndUserProps, MinimalProxy{
+export interface VirtualProps extends EndUserProps, MinimalProxy{
     beaconFound: boolean;
     dependenciesLoaded: boolean;
     xsltProcessor: XSLTProcessor,
 }
 
-export interface BeMetamorphicProps extends BeMetamorphicVirtualProps{
-    proxy: Element & BeMetamorphicVirtualProps
+export type Proxy = Element & VirtualProps;
+
+export interface ProxyProps extends VirtualProps {
+    proxy: Proxy;
 }
 
-export type P = Partial<Element & BeMetamorphicVirtualProps>;
+export type PP = ProxyProps
 
-export interface BeMetamorphicActions{
-    onBeaconFound(self: this): Promise<P>;
-    onWhenDefined(self: this): Promise<void>;
-    onDependenciesLoaded(self: this): Promise<P>;
-    onXSLTProcessor(self: this): Promise<P>;
+export type P = Partial<Element & VirtualProps>;
+
+export interface Actions{
+    onBeaconFound(pp: PP): Promise<P>;
+    onWhenDefined(pp: PP): Promise<void>;
+    onDependenciesLoaded(pp: PP): Promise<P>;
+    onXSLTProcessor(pp: PP): Promise<P>;
 
 }
 

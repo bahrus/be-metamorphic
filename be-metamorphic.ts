@@ -1,16 +1,16 @@
 import {define, BeDecoratedProps} from 'be-decorated/be-decorated.js';
-import {BeMetamorphicVirtualProps, BeMetamorphicProps, BeMetamorphicActions, P} from './types';
+import {VirtualProps, PP, Proxy, Actions, P} from './types';
 import {register} from 'be-hive/register.js';
 import 'be-a-beacon/be-a-beacon.js';
 import {Mgmt} from 'trans-render/xslt/Mgmt.js';
 
 const xsltLookup: {[key: string]: XSLTProcessor} = {};
 
-export class BeMetamorphic extends EventTarget implements BeMetamorphicActions{
+export class BeMetamorphic extends EventTarget implements Actions{
 
     #xsltMgmt = new Mgmt();
 
-    async onWhenDefined({proxy, whenDefined, self}: this): Promise<void>{
+    async onWhenDefined({proxy, whenDefined, self}: PP): Promise<void>{
         const beacon = self.querySelector('template[be-a-beacon],template[is-a-beacon]');
         if(beacon !== null){
             proxy.beaconFound = true;
@@ -24,7 +24,7 @@ export class BeMetamorphic extends EventTarget implements BeMetamorphicActions{
         }
     }
 
-    async onBeaconFound({whenDefined}: this): Promise<P> {
+    async onBeaconFound({whenDefined}: PP): Promise<P> {
         for(const s of whenDefined){
             await customElements.whenDefined(s);
         }
@@ -33,14 +33,14 @@ export class BeMetamorphic extends EventTarget implements BeMetamorphicActions{
         }
     }
 
-    async onDependenciesLoaded({xslt}: this): Promise<P> {
+    async onDependenciesLoaded({xslt}: PP): Promise<P> {
         const xsltProcessor = await this.#xsltMgmt.getProcessor(xslt);
         return {
             xsltProcessor
         };
     }
 
-    async onXSLTProcessor({expandTempl, xsltProcessor, self, proxy}: this): Promise<P> {
+    async onXSLTProcessor({expandTempl, xsltProcessor, self, proxy}: PP): Promise<P> {
         let xmlSrc = self;
         if(expandTempl){
             const {clone} = await import('trans-render/xslt/clone.js');
@@ -60,15 +60,13 @@ export class BeMetamorphic extends EventTarget implements BeMetamorphicActions{
 
 }
 
-export interface BeMetamorphic extends BeMetamorphicProps{}
-
 const tagName = 'be-metamorphic';
 
 const ifWantsToBe = 'metamorphic';
 
 const upgrade = '*';
 
-define<BeMetamorphicProps & BeDecoratedProps<BeMetamorphicProps, BeMetamorphicActions>, BeMetamorphicActions>({
+define<VirtualProps & BeDecoratedProps<VirtualProps, Actions>, Actions>({
     config:{
         tagName,
         propDefaults:{

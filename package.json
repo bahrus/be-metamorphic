@@ -12,7 +12,7 @@
     "xslt"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "playwright test",
     "serve": "node node_modules/may-it-serve/serve.js",
     "package-check": "package-check"
   },
@@ -25,17 +25,18 @@
   },
   "types": "types.d.ts",
   "dependencies": {
-    "be-a-beacon": "0.0.11",
-    "be-decorated": "0.0.153",
-    "be-hive": "0.0.63",
-    "trans-render": "0.0.585"
+    "be-a-beacon": "0.0.23",
+    "be-decorated": "0.0.182",
+    "be-hive": "0.0.76",
+    "trans-render": "0.0.628"
   },
   "devDependencies": {
-    "may-it-serve": "0.0.2",
+    "may-it-serve": "0.0.3",
     "@skypack/package-check": "0.2.2",
+    "@playwright/test": "1.27.1",
     "@custom-elements-manifest/analyzer": "0.6.4",
-    "@ui5/webcomponents": "1.7.0",
-    "@ui5/webcomponents-fiori": "1.7.0"
+    "@ui5/webcomponents": "1.8.0",
+    "@ui5/webcomponents-fiori": "1.8.0"
   },
   "repository": {
     "type": "git",

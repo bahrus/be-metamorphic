@@ -1,4 +1,4 @@
-import { define } from 'be-decorated/be-decorated.js';
+import { define } from 'be-decorated/DE.js';
 import { register } from 'be-hive/register.js';
 import 'be-a-beacon/be-a-beacon.js';
 import { Mgmt } from 'trans-render/xslt/Mgmt.js';

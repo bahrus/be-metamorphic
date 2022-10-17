@@ -2,6 +2,8 @@
 
 be-metamorphic lets us party like it's 1999, and take advantage of the [increasingly popular](https://www.chromestatus.com/metrics/feature/timeline/popularity/79) XSLT, to turn a caterpillar of native HTML markup into a butterfly of web components-filled goodness.
 
+[![Playwright Tests](https://github.com/bahrus/be-metamorphic/actions/workflows/CI.yml/badge.svg?branch=baseline)](https://github.com/bahrus/be-metamorphic/actions/workflows/CI.yml)
+
 <a href="https://nodei.co/npm/be-metamorphic/"><img src="https://nodei.co/npm/be-metamorphic.png"></a>
 
 [![How big is this package in your project?](https://img.shields.io/bundlephobia/minzip/be-metamorphic?style=for-the-badge)](https://bundlephobia.com/result?p=be-metamorphic)
@@ -81,36 +83,7 @@ generates:
 
 The presence of the template (be-a-beacon) at the bottom is needed to let be-metamorphic know it can proceed with the transformation.
 
-## Shared template
 
-```html
-<div be-metamorphic>
-  <ul>
-    <li>
-      Pineapple
-      <span slot=description>Occurs between red and yellow</span>
-      <span slot=additional-text>Expires</span>
-      <span slot=additional-text-state>Warning</span>
-    </li>
-    <li>
-      Banana
-      <span slot=description>The yellow lengthy fruit</span>
-      <span slot=additional-text>Re-stock</span>
-      <span slot=additional-text-state>Error</span>   
-    </li>
-    <template be-a-beacon>
-  </ul>
-</div>
-
-<be-hive>
-  <be-metamorphic proxy-prop-defaults='{
-    "whenDefined": ["ui5-li", "ui5-list"],
-    "xslt": "./ui5-list.xslt"
-  }'></be-metamorphic>
-</be-hive>
-```
-
-This shares the same settings for all the elements adorned with be-metamorphic in the ShadowDOM realm.
 
 ## Inlining the template
 
